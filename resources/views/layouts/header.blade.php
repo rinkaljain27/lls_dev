@@ -6,12 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name')}}</title>
     <link rel="stylesheet" href="<?php echo URL::to('assets\css\materialdesignicons.min.css'); ?>" />
-    <link rel="stylesheet" href="<?php echo URL::to('assets\css\vendor.bundle.base.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('assets\css\style.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('assets\css\toastr.min.css'); ?>" />
     <link rel="shortcut icon" href="<?php echo URL::to('assets\images\favicon.png'); ?>" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="<?php echo URL::to('assets\css\select2.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('assets\css\select2-bootstrap.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('assets\css\dataTables.bootstrap.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('assets\css\buttons.bootstrap.min.css'); ?>" />
