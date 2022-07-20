@@ -1,0 +1,59 @@
+install laravel 8
+composer create-project laravel/laravel:^8.0 example-app
+
+set up env file create database
+
+composer require laravel/passport
+install passport library
+
+php artisan migrate
+run this command
+
+php artisan passport:install
+install passport
+ 
+create migrations
+
+add field in migrations
+run this command
+php artisan migrate:rollback
+php artisan migrate
+
+without lost data to add field remove field update field
+
+php artisan make:migration remove_name_to_system_logs_table
+$table->dropColumn('name');
+php artisan migrate
+
+add field
+php artisan make:migration add_name_to_system_logs_table
+in up -  $table->string('name')->unique()->after('type');
+in down -   $table->dropColumn('name');
+php artisan migrate
+
+rename column 
+php artian make:migration rename_columns_to_users_table --table=users
+Schema::table('users', function ($table) {
+    $table->renameColumn('username', 'first_name');
+});
+username to firstname
+php artisan migrate
+
+change anything in field 
+php artisan make:migration change_sometable_in_system_logs_table --table=system_logs
+  $table->string('type',100)->change();
+add ->change() in field
+php artisan migrate
+
+to give a relationship in table field or give a foreign key to fields must have to same type of field in relationship.
+ 
+ I changed type and after give a foregn key to migration..
+ when we are giving foregn key must check -- data table should blank..
+ 
+ $table->bigInteger('product_type_id')->length(20)->unsigned()->change();
+ $table->foreign('product_type_id')->references('id')->on('product_type')->onUpdate('cascade')->change();
+           
+
+
+
+
