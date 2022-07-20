@@ -19,14 +19,14 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Role Controller Routes
+// Administrator Routes
 Route::resource('/roles',RoleController::class);
 Route::resource('/product_type',ProductTypeController::class);
 Route::resource('/product',ProductController::class);

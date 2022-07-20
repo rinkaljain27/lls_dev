@@ -44,6 +44,19 @@ a.forgot-pass.text-right {
     color: #3c3c3b !important;
 }
 
+.form-group {
+    margin-bottom: 1.8rem;
+    position: relative;
+  }
+label.error {
+    position: absolute;
+    bottom: -18px;
+    left: 15px;
+  }
+.error {
+    color: #f35353;
+    font-family: verdana, Helvetica;
+  }
 /*responsive css*/
 @media (max-width: 992px){
     .container-scroller {
@@ -100,4 +113,6 @@ a.forgot-pass.text-right {
     background-color: #3c3c3b;
 }
 }
+
+
 /*end*/

@@ -17,14 +17,10 @@
     <link rel="stylesheet" href="<?php echo URL::to('assets\css\buttons.bootstrap.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('assets\css\sweetalert2.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('assets\css\theme.css'); ?>" />
-    
+    <link rel="stylesheet" href="<?php echo URL::to('assets\css\custome.css'); ?>" />
     
     <script src="<?php echo URL::to('assets\js\jquery.min.js'); ?>" crossorigin="anonymous"></script>
     <script src="<?php echo URL::to('assets\js\jquery.validate.js'); ?>"></script>  
-     
-    
-
-
     <script>
       var dataTableConfigObj;
         dataTableConfigObj = {
