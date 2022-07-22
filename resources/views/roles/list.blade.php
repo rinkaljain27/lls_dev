@@ -22,7 +22,9 @@
                                         <thead>
                                         <tr>
                                             <th> Role Name </th>
+                                            <th> Status </th>
                                             <th> Created Date </th>
+                                            <th> Updated Date </th>
                                             <th> Action </th>
                                         </tr>
                                         </thead>
@@ -49,10 +51,15 @@
                                 data: 'name',
                                 name: 'name'
                             }, {
+                                data: 'status',
+                                name: 'status'
+                            }, {
                                 data: 'created_at',
                                 name: 'created_at'
-                            },
-                            {
+                            }, {
+                                data: 'updated_at',
+                                name: 'updated_at'
+                            },{
                                 data: 'action',
                                 name: 'action',
                                 orderable: false,
@@ -67,7 +74,7 @@
                         
                         function deleteConfirmation(id) {
                             swal({
-                                title: "Are you Sure Want to Delete this Record?",
+                                title: "Delete?",
                                 text: "Please ensure and then confirm!",
                                 type: "warning",
                                 showCancelButton: !0,
@@ -103,7 +110,6 @@
                                     e.dismiss;
                                 }
                             }, function (dismiss) {
-                                toastr.success('Record is Safe', 'Success');
                                 return false;
                             })
                         }

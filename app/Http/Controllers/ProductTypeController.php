@@ -23,10 +23,10 @@ class ProductTypeController extends Controller
 
     /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product Type INDEX PAGE
+     * @comment  PRODUCT TYPE INDEX PAGE
      * @date 2022-07-13
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -37,10 +37,10 @@ class ProductTypeController extends Controller
     }
      /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product Type Listing PAGE
+     * @comment  PRODUCT TYPE LISTING PAGE
      * @date 2022-07-13
      */
 
@@ -52,8 +52,17 @@ class ProductTypeController extends Controller
                     ->addColumn('action', function($row){
                         return getBtnHtml($row, 'product_type', true, true);
                     })
+                    ->addColumn('status', function($row){
+                        if($row['is_active'] == 1) {
+                            return 'Active';
+                        }
+                    })
                     ->addColumn('created_at', function($row){
-                        $date = date('Y/m/d H:i:s', strtotime($row['created_at']));
+                        $date = date('d/m/Y H:i:s', strtotime($row['created_at']));
+                        return $date;
+                    })
+                    ->addColumn('updated_at', function($row){
+                        $date = date('d/m/Y H:i:s', strtotime($row['updated_at']));
                         return $date;
                     })
                     ->rawColumns(['action'])
@@ -62,10 +71,10 @@ class ProductTypeController extends Controller
     }
     /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product Type create PAGE
+     * @comment  PRODUCT TYPE CREATE PAGE
      * @date 2022-07-13
      */
     public function create(Request $request) {
@@ -73,17 +82,17 @@ class ProductTypeController extends Controller
     }
     /*
     * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product Type INSERT RECORDS
+     * @comment  PRODUCT TYPE INSERT RECORDS
      * @date 2022-07-13
      */
     public function store(Request $request) {
         // printData($request->all());
         $input = $request->all();
         $validate = [
-            'product_type' => 'required|alpha|min:2|max:20|unique:product_type,product_type,' . $request->id . ',id,deleted_at,NULL',
+            'product_type' => 'required|min:2|max:20|unique:product_type,product_type,' . $request->id . ',id,deleted_at,NULL',
         ];
         $message = ValidateFromInput($input,$validate);
         if($message){
@@ -92,15 +101,17 @@ class ProductTypeController extends Controller
         }
         if ($request->id) {
             $product_type = ProductType::find($request->id);
-            insertSystemLog('Update Product Type From Web',auth()->user()->name,$request->header('user-agent'));
+            insertSystemLog('Update Product Type From Web App',ucfirst(auth()->user()->name).' Update Product Type From Web App',$request->header('user-agent'));
         } else {
             $product_type = new ProductType();
-            insertSystemLog('Insert Product Type From Web',auth()->user()->name,$request->header('user-agent'));
+            $product_type->created_at = date('Y-m-d H:i:s');
+            $product_type->updated_at = date('Y-m-d H:i:s');
+            insertSystemLog('Insert Product Type From Web App',ucfirst(auth()->user()->name).' Insert Product Type From Web App',$request->header('user-agent'));
         }
         $product_type->product_type = $request->product_type;
         $product_type->save();
         if($product_type){
-            Toastr::success('Product Type updated successfully.', 'Success');
+            Toastr::success('Product Type Updated Successfully.', 'Success');
             return Redirect::route('product_type.index');
         }
         Toastr::success('Something Wrong', 'Error');
@@ -108,10 +119,10 @@ class ProductTypeController extends Controller
     }
      /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product Type edit PAGE
+     * @comment  PRODUCT TYPE EDIT PAGE
      * @date 2022-07-13
      */
     public function edit(Request $request, ProductType $product_type) {
@@ -120,17 +131,18 @@ class ProductTypeController extends Controller
     }
      /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product Type delete Records
+     * @comment  PRODUCT TYPE DELETE RECORDS
      * @date 2022-07-13
      */
     public function destroy(Request $request) {
-        $record = ProductType::destroy($request->id);
+        $record = ProductType::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
+        // $record = ProductType::destroy($request->id);
             if ($record) {
-                insertSystemLog('Delete Product Type From Web',auth()->user()->name,$request->header('user-agent'));
-                return endRequest('Success', 200, 'Record deleted successfully.');
+                insertSystemLog('Delete Product Type From Web App',ucfirst(auth()->user()->name).' Delete Product Type From Web App',$request->header('user-agent'));
+                return endRequest('Success', 200, 'Record Deleted Successfully.');
             } else {
                 return endRequest('Error', 205, 'Record not found.');
             }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
@@ -12,6 +13,7 @@ class Product extends Model
      *
      * @var array
      */
+    use SoftDeletes;
     public $table = 'product';
     protected $fillable = [
         'id', 'product_name','product_type_id','is_active'

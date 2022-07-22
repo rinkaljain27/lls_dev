@@ -34,7 +34,7 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">UserName</label>
-                                                            <input type="text"  value="{{ Request::get('name') ?? old('name',isset($user) ? $user->name : '') ?? '' }}" name="name" class="form-control col-md-4" id="" placeholder="UserName">
+                                                            <input type="text"  value="{{ Request::get('name') ?? old('name',isset($user) ? $user->name : '') ?? '' }}" name="name" class="form-control col-md-4" id="" placeholder="UserName" >
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
@@ -52,19 +52,25 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Password</label>
-                                                            <input type="password" placeholder="Password" class="form-control col-md-4" name="password" id="password" maxlength="25" value="{{ Request::get('password') ?? old('password','') ?? '' }}">
+                                                            <input type="password" placeholder="Password" class="form-control col-md-4" name="password" id="password" maxlength="25" value="{{ Request::get('password') ?? old('password','') ?? '' }}" autocomplete="new-password">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label">Confirm Password</label>
+                                                            <input type="password" placeholder="Confirm Password" class="form-control col-md-4" name="c_password" id="c_password" maxlength="25" value="{{ Request::get('password') ?? old('password','') ?? '' }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Mobile No.</label>
-                                                            <input type="number" name="mobile"  value="{{ Request::get('mobile') ?? old('mobile',isset($user) ? $user->mobile : '') ?? '' }}"  class="form-control col-md-4" id="" placeholder="Mobile No.">
+                                                            <input type="text" name="mobile"  value="{{ Request::get('mobile') ?? old('mobile',isset($user) ? $user->mobile : '') ?? '' }}"  class="form-control col-md-4" id="" placeholder="Mobile No." maxlength="10">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Address</label>
-                                                            <textarea type="text" name="address" class="form-control col-md-4" id="" placeholder="Address">{{ Request::get('address') ?? old('address',isset($user) ? $user->address : '') ?? '' }}</textarea>
+                                                            <textarea type="text"  name="address" class="form-control col-md-4" id="" placeholder="Address">{{ Request::get('address') ?? old('address',isset($user) ? $user->address : '') ?? '' }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -104,57 +110,67 @@
                                 },
                                 email: {
                                     required: true,
-                                    email: true
+                                    email: true,
+                                    minlength: 6,
+                                    maxlength: 25
                                 },
                                 password: {
                                     required: true,
-                                    minlength: 2,
-                                    maxlength: 25,
+                                    minlength: 6,
+                                    maxlength: 50,
+                                },
+                                c_password: {
+                                    required: true,
+                                    minlength: 6,
+                                    maxlength: 50,
+                                    equalTo: '[name="password"]',
                                 },
                                 mobile: {
                                     required: true,
                                     minlength: 10,
-                                    maxlength: 12,
-                                },
-                                address: {
-                                    required: true,
-                                },
+                                    maxlength: 10,
+                                    matches: "([0-9]{10})|(\([0-9]{3}\)\s+[0-9]{3}\-[0-9]{4})",
+                                }
                             },
                             messages: {
                                 role_id: {
-                                    required: "Please Select your Role",
+                                    required: "Please Select Role",
                                 },
                                 name: {
-                                    required: "Please enter your UserName",
-                                    minlength: "Your UserName must be at least 6 characters long",
-                                    maxlength: "Please enter UserName no more than 20 characters"
+                                    required: "Please Enter User Name",
+                                    minlength: "UserName Must Be At Least 6 Characters Long",
+                                    maxlength: "Please Enter User Name No More Than 20 Characters"
 
                                 },
                                 full_name: {
-                                    required: "Please enter your Full Name",
-                                    minlength: "Your Full Name must be at least 6 characters long",
-                                    maxlength: "Please enter Full Name no more than 20 characters"
+                                    required: "Please Enter Full Name",
+                                    minlength: "Full Name Must Be At Least 6 Characters Long",
+                                    maxlength: "Please Enter Full Name No More Than 25 Characters"
 
                                 },
                                 email: {
-                                    required: "Please enter your Email",
-                                    email: "Please Enter A Valid Email Address"
+                                    required: "Please Enter Email",
+                                    email: "Please Enter A Valid Email Address",
+                                    minlength: "Email Must Be At Least 6 Characters Long",
+                                    maxlength: "Please Enter Email No More Than 50 Characters"
                                 },
                                 password: {
-                                    required: "Please enter your Password",
-                                    minlength: "Your Password must be at least 6 characters long",
-                                    maxlength: "Please enter Password no more than 20 characters"
+                                    required: "Please Enter Password",
+                                    minlength: "Password Must Be At Least 6 Characters Long",
+                                    maxlength: "Please Enter Password No More Than 20 Characters"
+                                },
+                                c_password: {
+                                    required: "Please Enter Password",
+                                    minlength: "Password Must Be At Least 6 Characters Long",
+                                    maxlength: "Please Enter Password No More Than 20 Characters",
+                                    equalTo: "The Password And Confirm Password Should Be Same."
                                 },
                                 mobile: {
-                                    required: "Please enter your Mobile Number",
-                                    minlength: "Your Mobile Number must be at least 10 digits long",
-                                    maxlength: "Please enter Mobile Number no more than 12 characters"
-
-                                },
-                                address: {
-                                    required: "Please enter your Address",
-                                },
-                                
+                                    required: "Please Enter Mobile Number",
+                                    minlength: "Mobile Number Must Be At Least 10 Digits Long",
+                                    maxlength: "Please Enter Mobile Number No More Than 10 Digits",
+                                    matches: "Please Enter A Valid Mobile Number",
+                                }
                             },
                             errorPlacement: function(error, element) {
                                 if (element.is(":radio")) {

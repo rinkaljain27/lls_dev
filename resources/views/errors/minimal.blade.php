@@ -50,7 +50,7 @@
 
         </div>
         <div class="message">
-            <a href="{{url('/home')}}" class="btn btn-primary btn-color-set p-3"> Dashboard </a>
+            <a href="{{url('/dashboard')}}" class="btn btn-primary btn-color-set p-3"> Dashboard </a>
         </div>
     </div>
         

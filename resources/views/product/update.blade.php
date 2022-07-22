@@ -70,12 +70,12 @@
                             },
                             messages: {
                                 product_name: {
-                                    required: "Please enter your Product Name",
-                                    minlength: "Your Product Name must be at least 6 characters long",
-                                    maxlength: "Please enter Product Name no more than 20 characters"
+                                    required: "Please Enter Product Name",
+                                    minlength: "Product Name Must Be At Least 6 Characters Long",
+                                    maxlength: "Please Enter Product Name No More Than 20 Characters"
                                 },
                                 product_type_id: {
-                                    required: "Please Select your Product Type",
+                                    required: "Please Select Product Type",
                                 },
                             },
                             errorPlacement: function(error, element) {

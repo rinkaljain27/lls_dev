@@ -48,10 +48,12 @@ a.forgot-pass.text-right {
     margin-bottom: 1.8rem;
     position: relative;
   }
-label.error {
+  label.error {
     position: absolute;
-    bottom: -18px;
-    left: 15px;
+    bottom: -22px;
+    left: 10px;
+    font-size: 0.675rem;
+    padding: 5px;
   }
 .error {
     color: #f35353;

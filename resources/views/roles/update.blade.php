@@ -57,9 +57,9 @@
                             },
                             messages: {
                                 name: {
-                                    required: "Please enter your Role Name",
-                                    minlength: "Your Role Name must be at least 6 characters long",
-                                    maxlength: "Please enter Role Name no more than 20 characters"
+                                    required: "Please Enter Role Name",
+                                    minlength: "Role Name Must Be At Least 6 Characters Long",
+                                    maxlength: "Please Enter Role Name No More Than 20 Characters"
                                 },
                             },
                             errorPlacement: function(error, element) {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SystemLogs extends Model
 {
@@ -12,6 +13,7 @@ class SystemLogs extends Model
      *
      * @var array
      */
+    use SoftDeletes;
     protected $fillable = [
         'id', 'user_id', 'type','comment','json_data'
     ];

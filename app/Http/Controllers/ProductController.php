@@ -24,10 +24,10 @@ class ProductController extends Controller
 
     /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product INDEX PAGE
+     * @comment  PRODUCT INDEX PAGE
      * @date 2022-07-15
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -38,10 +38,10 @@ class ProductController extends Controller
     }
      /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product Listing PAGE
+     * @comment  PRODUCT LISTING PAGE
      * @date 2022-07-15
      */
 
@@ -53,8 +53,17 @@ class ProductController extends Controller
                     ->addColumn('action', function($row){
                         return getBtnHtml($row, 'product', true, true);
                     })
+                    ->addColumn('status', function($row){
+                        if($row['is_active'] == 1) {
+                            return 'Active';
+                        }
+                    })
                     ->addColumn('created_at', function($row){
-                        $date = date('Y/m/d H:i:s', strtotime($row['created_at']));
+                        $date = date('d/m/Y H:i:s', strtotime($row['created_at']));
+                        return $date;
+                    })
+                    ->addColumn('updated_at', function($row){
+                        $date = date('d/m/Y H:i:s', strtotime($row['updated_at']));
                         return $date;
                     })
                     ->rawColumns(['action'])
@@ -63,10 +72,10 @@ class ProductController extends Controller
     }
     /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product create PAGE
+     * @comment  PRODUCT CREATE PAGE
      * @date 2022-07-15
      */
     public function create(Request $request) {
@@ -75,17 +84,17 @@ class ProductController extends Controller
     }
     /*
     * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product INSERT RECORDS
+     * @comment  PRODUCT INSERT RECORDS
      * @date 2022-07-15
      */
     public function store(Request $request) {
         // printData($request->all());
         $input = $request->all();
         $validate = [
-            'product_name' => 'required|alpha|min:2|max:20|unique:product,product_name,' . $request->id . ',id,deleted_at,NULL',
+            'product_name' => 'required|min:2|max:20|unique:product,product_name,' . $request->id . ',id,deleted_at,NULL',
             'product_type_id' => 'required',
         ];
         $message = ValidateFromInput($input,$validate);
@@ -95,16 +104,18 @@ class ProductController extends Controller
         }
         if ($request->id) {
             $product = Product::find($request->id);
-            insertSystemLog('Update Product From Web',auth()->user()->name,$request->header('user-agent'));
+            insertSystemLog('Update Product From Web App',ucfirst(auth()->user()->name).' Update Product From Web App',$request->header('user-agent'));
         } else {
             $product = new Product();
-            insertSystemLog('Insert Product From Web',auth()->user()->name,$request->header('user-agent'));
+            $product->created_at = date('Y-m-d H:i:s');
+            $product->updated_at = date('Y-m-d H:i:s');
+            insertSystemLog('Insert Product From Web App',ucfirst(auth()->user()->name).' Insert Product From Web App',$request->header('user-agent'));
         }
         $product->product_name = $request->product_name;
         $product->product_type_id = $request->product_type_id;
         $product->save();
         if($product){
-            Toastr::success('Product updated successfully.', 'Success');
+            Toastr::success('Product Updated Successfully.', 'Success');
             return Redirect::route('product.index');
         }
         Toastr::success('Something Wrong', 'Error');
@@ -112,10 +123,10 @@ class ProductController extends Controller
     }
      /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product edit PAGE
+     * @comment  PRODUCT EDIT PAGE
      * @date 2022-07-15
      */
     public function edit(Request $request, Product $product) {
@@ -126,19 +137,20 @@ class ProductController extends Controller
     }
      /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Product delete Records
+     * @comment  PRODUCT DELETE RECORDS
      * @date 2022-07-15
      */
     public function destroy(Request $request) {
-        $record = Product::destroy($request->id);
-            if ($record) {
-                insertSystemLog('Delete Product From Web',auth()->user()->name,$request->header('user-agent'));
-                return endRequest('Success', 200, 'Record deleted successfully.');
+        $record = Product::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
+        // $record = Product::destroy($request->id);
+        if ($record) {
+                insertSystemLog('Delete Product From Web App',ucfirst(auth()->user()->name).' Delete Product From Web App',$request->header('user-agent'));
+                return endRequest('Success', 200, 'Record Deleted Successfully.');
             } else {
-                return endRequest('Error', 205, 'Record not found.');
+                return endRequest('Error', 205, 'Record Not Found.');
             }
     }
 }

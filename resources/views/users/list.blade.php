@@ -21,11 +21,13 @@
                                     <table id="usersdata" class="table table-hover table-bordered table-striped" cellspacing="0" width="100%" >
                                         <thead>
                                         <tr>
-                                            <th> Name </th>
+                                            <th> User Name </th>
                                             <th> Full Name </th>
                                             <th> User Email </th>
                                             <th> User Mobile </th>
+                                            <th> Status </th>
                                             <th> Created Date </th>
+                                            <th> Updated Date </th>
                                             <th> Action </th>
                                         </tr>
                                         </thead>
@@ -51,24 +53,25 @@
                         var columns = [{
                                 data: 'name',
                                 name: 'name'
-                            },
-                            {
+                            },{
                                 data: 'full_name',
                                 name: 'full_name'
-                            },
-                            {
+                            },{
                                 data: 'email',
                                 name: 'email'
-                            },
-                            {
+                            },{
                                 data: 'mobile',
                                 name: 'mobile'
-                            },
-                            {
+                            }, {
+                                data: 'status',
+                                name: 'status'
+                            }, {
                                 data: 'created_at',
                                 name: 'created_at'
-                            },
-                            {
+                            }, {
+                                data: 'updated_at',
+                                name: 'updated_at'
+                            },{
                                 data: 'action',
                                 name: 'action',
                                 orderable: false,
@@ -83,7 +86,7 @@
                         
                         function deleteConfirmation(id) {
                             swal({
-                                title: "Are you Sure Want to Delete this Record?",
+                                title: "Delete?",
                                 text: "Please ensure and then confirm!",
                                 type: "warning",
                                 showCancelButton: !0,
@@ -120,7 +123,6 @@
                                     e.dismiss;
                                 }
                             }, function (dismiss) {
-                                toastr.success('Record is Safe', 'Success');
                                 return false;
                             })
                         }

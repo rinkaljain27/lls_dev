@@ -56,9 +56,9 @@
                             },
                             messages: {
                                 product_type: {
-                                    required: "Please enter your Product Type",
-                                    minlength: "Your Product Type must be at least 6 characters long",
-                                    maxlength: "Please enter Product Type no more than 20 characters"
+                                    required: "Please Enter Product Type",
+                                    minlength: "Product Type Must Be At Least 6 Characters Long",
+                                    maxlength: "Please Enter Product Type No More Than 20 Characters"
                                 },
                             },
                             errorPlacement: function(error, element) {

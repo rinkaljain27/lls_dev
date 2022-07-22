@@ -24,10 +24,10 @@ class UserController extends Controller
 
     /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Users INDEX PAGE
+     * @comment  USERS INDEX PAGE
      * @date 2022-07-18
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -38,10 +38,10 @@ class UserController extends Controller
     }
      /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  User Listing PAGE
+     * @comment  USERS LISTING PAGE
      * @date 2022-07-18
      */
 
@@ -54,8 +54,17 @@ class UserController extends Controller
                     ->addColumn('action', function($row){
                         return getBtnHtml($row, 'users', true, true);
                     })
+                    ->addColumn('status', function($row){
+                        if($row['is_active'] == 1) {
+                            return 'Active';
+                        }
+                    })
                     ->addColumn('created_at', function($row){
-                        $date = date('Y/m/d H:i:s', strtotime($row['created_at']));
+                        $date = date('d/m/Y H:i:s', strtotime($row['created_at']));
+                        return $date;
+                    })
+                    ->addColumn('updated_at', function($row){
+                        $date = date('d/m/Y H:i:s', strtotime($row['updated_at']));
                         return $date;
                     })
                     ->rawColumns(['action'])
@@ -64,10 +73,10 @@ class UserController extends Controller
     }
     /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Users create PAGE
+     * @comment  USERS CREATE PAGE
      * @date 2022-07-18
      */
     public function create(Request $request) {
@@ -76,25 +85,24 @@ class UserController extends Controller
     }
     /*
     * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Users INSERT RECORDS
+     * @comment  USERS INSERT RECORDS
      * @date 2022-07-18
      */
     public function store(Request $request) {
         // printData($request->all());
         $input = $request->all();
         $validate = [
-            'name' => 'required|alpha|min:2|max:20|unique:users,name,' . $request->id . ',id,deleted_at,NULL',
+            'name' => 'required|min:2|max:20|unique:users,name,' . $request->id . ',id,deleted_at,NULL',
             'role_id' => 'required',
             'full_name' => 'required|min:2|max:70',
             'email' => 'required|min:2|max:70|unique:users,email,' . $request->id . ',id,deleted_at,NULL',
             'mobile' => 'required',
             'address' => 'required',
-            'password' => 'min:2|max:25',
-           
-        
+            'password' => 'required|confirmed|min:6|max:25',
+            'c_password' => 'required|min:6|max:25',
         ];
         $message = ValidateFromInput($input,$validate);
         if($message){
@@ -103,10 +111,12 @@ class UserController extends Controller
         }
         if ($request->id) {
             $user = User::find($request->id);
-            insertSystemLog('Update User From Web',auth()->user()->name,$request->header('user-agent'));
+            insertSystemLog('Update User From Web App',ucfirst(auth()->user()->name).' Update User From Web App',$request->header('user-agent'));
         } else {
             $user = new User();
-            insertSystemLog('Insert User From Web',auth()->user()->name,$request->header('user-agent'));
+            $user->created_at = date('Y-m-d H:i:s');
+            $user->updated_at = date('Y-m-d H:i:s');
+            insertSystemLog('Insert User From Web App',ucfirst(auth()->user()->name).' Insert User From Web App',$request->header('user-agent'));
         }
         $user->name = $request->name;
         $user->role_id = $request->role_id;
@@ -129,10 +139,10 @@ class UserController extends Controller
     }
      /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Users edit PAGE
+     * @comment  USERS EDIT PAGE
      * @date 2022-07-18
      */
     public function edit(Request $request, User $user) {
@@ -143,19 +153,20 @@ class UserController extends Controller
     }
      /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
-     * @comment  Users delete Records
+     * @comment  USERS DELETE RECORDS
      * @date 2022-07-18
      */
     public function destroy(Request $request) {
-        $record = User::destroy($request->id);
+        $record = User::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
+        // $record = User::destroy($request->id);
             if ($record) {
-                insertSystemLog('Delete User From Web',auth()->user()->name,$request->header('user-agent'));
-                return endRequest('Success', 200, 'Record deleted successfully.');
+                insertSystemLog('Delete User From Web App',ucfirst(auth()->user()->name).' Delete User From Web App',$request->header('user-agent'));
+                return endRequest('Success', 200, 'Record Deleted Successfully.');
             } else {
-                return endRequest('Error', 205, 'Record not found.');
+                return endRequest('Error', 205, 'Record Not Found.');
             }
     }
 }

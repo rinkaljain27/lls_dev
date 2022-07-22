@@ -1,12 +1,14 @@
-.sidebar .nav .nav-item.active > .nav-link:before {
+.sidebar .nav .nav-item.active > .nav-link:before  {
     background: #ffcc00;
+}
+.form-control:focus, .asColorPicker-input:focus, .dataTables_wrapper select:focus, .jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row select:focus, .jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type=number], .select2-container--default .select2-selection--single:focus, .select2-container--default .select2-selection--single .select2-search__field:focus, .typeahead:focus, .tt-query:focus, .tt-hint:focus {
+  border: 1px solid #ffcc00 !important;  
 }
 table{
   text-align:center;
 }
 input[type="search"],a.previous, a.next,a.paginate_button.current  {
     border: 1px solid #2c2e33;
-    height: calc(2.25rem + 2px);
     font-weight: normal;
     font-size: 0.875rem;
     padding: 0.625rem 0.6875rem;
@@ -15,6 +17,7 @@ input[type="search"],a.previous, a.next,a.paginate_button.current  {
     color: #ffffff;
     margin: 2px;
     text-decoration: none;
+    height: calc(2rem + 2px);
 }
 div.dataTables_wrapper div.dataTables_paginate {
     margin: 9px;
@@ -106,15 +109,17 @@ a.paginate_button {
 }
 .dataTables_info {
   float: left;
-  margin-bottom: 31px;
+  margin-left: 11px;
 }
 .dataTables_wrapper select {
   appearance: revert !important;
+  width: 50px !important;
 }
 .dataTables_length{
   float: left;
 }table.dataTable {
   margin-bottom: 24px !important;
+  margin-top: 29px !important;
 
 }thead {
   background: #2a3038;
@@ -146,7 +151,7 @@ color: rgba(255, 255, 255, 0.557) !important;
 input[type='text'],
 input[type='number'],
 textarea {
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .form-group {
@@ -156,8 +161,10 @@ textarea {
 
 label.error {
   position: absolute;
-  bottom: -18px;
+  bottom: -25px;
   left: 0px;
+  font-size: 0.675rem;
+  padding: 5px;
 }
 .select2-container--default .select2-selection--single, .select2-container--default .select2-dropdown, .select2-container--default .select2-selection--multiple {
   border-color: #e8f0fe;
@@ -180,4 +187,65 @@ label.error {
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
   background-color: #ffcc00;
   color: white;
+}
+div.dataTables_wrapper div.dataTables_info {
+  padding-top: 2px;
+  white-space: nowrap;
+}
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item {
+
+    padding: 5px 9px;
+
+}
+i.mdi.mdi-menu-down{
+  position: relative;
+  top: 3px;
+  left: 5px;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+  padding: 5px;
+}
+.swal2-modal .swal2-icon, .swal2-modal .swal2-success-ring {
+  margin-top: 0;
+  margin-bottom: 22px;
+}
+.swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-confirm, .swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-cancel {
+  margin-top: 16px;
+}
+.swal2-modal .swal2-styled {
+  border: 0;
+  border-radius: 3px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 500;
+  margin: 15px 5px 0;
+  padding: 10px 32px;
+}
+button.swal2-cancel.swal2-styled,button.swal2-confirm.swal2-styled {
+  font-size: 17px;
+  font-weight: 500;
+  margin: 15px 5px 0;
+  padding: 10px 32px !important;
+}
+.swal2-modal .swal2-title {
+  color: #ffffffc4;
+}
+.swal2-modal .swal2-content {
+  color: #ffffffa3;
+}
+.swal2-modal.swal2-show {
+  background: rgb(20 20 20) !important;
+}
+.swal2-container.swal2-shown {
+  background-color: rgb(41 39 39 / 77%);
+}
+.form-control, .asColorPicker-input, .dataTables_wrapper select, .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row select, .jsgrid .jsgrid-table .jsgrid-filter-row input[type=number], .select2-container--default .select2-selection--single, .select2-container--default .select2-selection--single .select2-search__field, .typeahead, .tt-query, .tt-hint {
+  height: calc(2.00rem + 2px);
+}
+textarea.form-control, textarea.asColorPicker-input, .select2-container--default textarea.select2-selection--single, .select2-container--default .select2-selection--single textarea.select2-search__field, textarea.typeahead, textarea.tt-query, textarea.tt-hint {
+  min-height: 4.875rem;
+  border: 1px solid;
 }

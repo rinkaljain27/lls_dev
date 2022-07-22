@@ -46,8 +46,8 @@ class LoginController extends Controller
     }
     /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
      * @comment  Login from web page
      * @date 2022-07-13
@@ -68,7 +68,7 @@ class LoginController extends Controller
    
         if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
         {
-            insertSystemLog('Web Login',auth()->user()->name.' logged In From Web App',$request->header('user-agent'));
+            insertSystemLog('Web Login',ucfirst(auth()->user()->name).' Logged In From Web App',$request->header('user-agent'));
 
             if (auth()->user()) {
                 $user = auth()->user()->toarray();
@@ -76,7 +76,7 @@ class LoginController extends Controller
                 // $data = $request->session()->all();
                 // printData($data);
                 Toastr::success('Login successfully.', 'Success');
-                return Redirect::route('home');
+                return Redirect::route('dashboard');
             }else{
                 Toastr::error('Invalid Credentials.', 'Error');
                 return Redirect::back();
@@ -88,8 +88,8 @@ class LoginController extends Controller
     }
     /*
      * @category WEBSITE
-     * @author Original Author Rinkal Jain
-     * @author Another Author <rjain@moba.de>
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
      * @copyright MOBA
      * @comment  Logout page from web
      * @date 2022-07-13
@@ -97,7 +97,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {  
-        insertSystemLog('Web Logout',auth()->user()->name.' logged Out From Web App',$request->header('user-agent'));       
+        insertSystemLog('Web Logout',ucfirst(auth()->user()->name).' Logged Out From Web App',$request->header('user-agent'));       
         auth()->logout();
         $request->session()->flush();
         $request->session()->regenerate();
