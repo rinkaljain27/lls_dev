@@ -16,10 +16,15 @@ class AdminRoleSeeder extends Seeder
     {
         //
         $role = [
-            'name' => 'Admin',
-            'name' => 'Service Enginner',
-            'name' => 'Client'
+            ['id'=>1, 'name' => 'Admin'],
+            ['id'=>2, 'name' => 'Service Enginner'],
+            ['id'=>3, 'name' => 'Client'],
         ];
-        Role::create($role);
+        foreach ($role as $roles) {
+            Role::create([
+             'id' => $roles['id'],
+             'name' => $roles['name'],
+           ]);
+        }
     }
 }

@@ -16,14 +16,15 @@ class AdminUserSeeder extends Seeder
     {
         //
         User::create([
+            'id' => 1,
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('123456'),
             'full_name' => 'admin',
             'mobile' => '8777788888',
             'address' => '101,shivalik',
-            'role_id' => '1',
-
+            'role_id'=> 1,
+            
         ]);
     }
 }
