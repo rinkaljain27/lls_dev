@@ -8,9 +8,9 @@
                             <div class="card">
                                 <div class="card-header card-head-bg">
                                     <div class="box-tools">
-                                    <h4 class="card-title">Product List</h4>
+                                    <h4 class="card-title">Commands List</h4>
                                         <?php if ($create) { ?>
-                                        <a href="{{url('product/create')}}" >
+                                        <a href="{{url('commands/create')}}">
                                             <img src="<?php echo URL::to('assets\images\add-icon.svg'); ?>" width="30">
                                         </a> 
                                         <?php } ?>
@@ -18,11 +18,11 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                    <table id="productData" class="table table-hover table-bordered table-striped" cellspacing="0" width="100%" >
+                                    <table id="commandData" class="table table-hover table-bordered table-striped" cellspacing="0" width="100%" >
                                         <thead>
                                         <tr>
-                                            <th> Product Name </th>
-                                            <th> Product Type </th>
+                                            <th> Command Name </th>
+                                            <th> Command URL </th>
                                             <th> Created Date </th>
                                             <th> Status </th>
                                             <th> Action </th>
@@ -36,6 +36,7 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
                 <div aria-hidden="false" role="dialog" tabindex="-1" id="status-modal" class="modal fade in">
                         <div class="modal-dialog">
@@ -59,19 +60,19 @@
                         </div>
                         <input type="hidden" value="" id="hdnDeleteId" name="hdnDeleteId" />
                         <input type="hidden" value="" id="status-flg" name="status-flg" />
-                </div>
+                    </div>
                 <script type="text/javascript">
                    
                      $(function () {
-                        var url = "{{ url('product/show') }}";
+                        var url = "{{ url('commands/show') }}";
                         dataTableConfigObj.ajax.url = url;
 
                         var columns = [{
-                                data: 'product_name',
-                                name: 'product_name'
-                            },{
-                                data: 'product_type.product_type',
-                                name: 'product_type'
+                                data: 'command_name',
+                                name: 'command_name'
+                            }, {
+                                data: 'command_url',
+                                name: 'command_url'
                             }, {
                                 data: 'created_at',
                                 name: 'created_at'
@@ -87,7 +88,8 @@
                         
                         dataTableConfigObj.columns = columns;
                         // alert(columns);
-                        $('#productData').dataTable(dataTableConfigObj);
+
+                        $('#commandData').dataTable(dataTableConfigObj);
                         });
                         
                         function deleteConfirmation(id) {
@@ -110,11 +112,11 @@
                                             "_token": token,
                                         },
                                         dataType: 'JSON',
-                                        url: "{{ url('product/destroy') }}",
+                                        url: "{{ url('commands/destroy') }}",
                                         success: function (data) {
                                             if (data.responseCode == 200) {
                                                 toastr.success(data.responseMessage, data.responseStatus);
-                                                var oTable = $('#productData').dataTable();
+                                                var oTable = $('#commandData').dataTable();
                                                 oTable.fnDraw(false);
                                             } else {
                                                 toastr.error(data.responseMessage, data.responseStatus);
@@ -137,7 +139,7 @@
                             $('#hdnDeleteId').val(id);
                         }
                         function UpdateStatus(id, val) {
-                            $.post("{{ url('product/updateStatus') }}", {
+                            $.post("{{ url('commands/updateStatus') }}", {
                                 "_token": "{{ csrf_token() }}",
                                 "id": id,
                                 "val": val,

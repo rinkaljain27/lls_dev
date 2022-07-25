@@ -8,33 +8,19 @@
                             <div class="card">
                                 <div class="card-header card-head-bg">
                                     <div class="box-tools">
-                                    <h4 class="card-title">Update User</h4>
-                                    <a href="{{url('users')}}" >
-                                        <img src="<?php echo URL::to('assets\images\back-btn.svg'); ?>" width="30" >
-                                    </a>
+                                    <h4 class="card-title">Update Profile</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form method="post" id="users-form" action="{{ route('users.store') }}" autocomplete="off">
+                                    <form method="post" id="profile-form" action="{{ url('updateProfile') }}" autocomplete="off">
                                             @csrf
                                             <input type="hidden" name="id" id="id" value="{{isset($user) ? $user->id : ''}}" />
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <div class="form-group">
-                                                            <label>Role</label>
-                                                            <select class="form-control select2 js-example-basic-single" id="role_id" name= "role_id"  style="width:100%">
-                                                                <option value="">Select Role</option>
-                                                                @foreach($role as $roles)
-                                                                <option {{ (isset($user) && $user->role_id == $roles->id) ? 'selected' : '' }} value="{{ $roles->id }}">{{ $roles->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="form-group">
-                                                            <label class="col-sm-4 control-label">UserName</label>
-                                                            <input type="text"  value="{{ Request::get('name') ?? old('name',isset($user) ? $user->name : '') ?? '' }}" name="name" class="form-control col-md-4" id="" placeholder="UserName" >
+                                                            <label class="col-sm-4 control-label">User Name</label>
+                                                            <input type="text"  value="{{ Request::get('name') ?? old('name',isset($user) ? $user->name : '') ?? '' }}" name="name" class="form-control col-md-4" id="" placeholder="User Name" >
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
@@ -51,6 +37,12 @@
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-group">
+                                                            <label class="col-sm-4 control-label">Mobile No.</label>
+                                                            <input type="text" name="mobile"  value="{{ Request::get('mobile') ?? old('mobile',isset($user) ? $user->mobile : '') ?? '' }}"  class="form-control col-md-4" id="mobile" placeholder="Mobile No." maxlength="10">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group">
                                                             <label class="col-sm-4 control-label">Password</label>
                                                             <input type="password" placeholder="Password" class="form-control col-md-4" name="password" id="password" maxlength="25" value="{{ Request::get('password') ?? old('password','') ?? '' }}" autocomplete="new-password">
                                                         </div>
@@ -59,18 +51,6 @@
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Confirm Password</label>
                                                             <input type="password" placeholder="Confirm Password" class="form-control col-md-4" name="c_password" id="c_password" maxlength="25" value="{{ Request::get('password') ?? old('password','') ?? '' }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="form-group">
-                                                            <label class="col-sm-4 control-label">Mobile No.</label>
-                                                            <input type="text" name="mobile"  value="{{ Request::get('mobile') ?? old('mobile',isset($user) ? $user->mobile : '') ?? '' }}"  class="form-control col-md-4" id="mobile" placeholder="Mobile No." maxlength="10">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="form-group">
-                                                            <label class="col-sm-4 control-label">Address</label>
-                                                            <textarea type="text"  name="address" class="form-control col-md-4" id="" placeholder="Address">{{ Request::get('address') ?? old('address',isset($user) ? $user->address : '') ?? '' }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -93,11 +73,8 @@
                         }
                     }
                     $(document).ready(function($) {
-                        $("#users-form").validate({
+                        $("#profile-form").validate({
                             rules: {
-                                role_id: {
-                                    required: true,
-                                },
                                 name: {
                                     required: true,
                                     minlength: 2,
@@ -132,9 +109,6 @@
                                 }
                             },
                             messages: {
-                                role_id: {
-                                    required: "Please Select Role",
-                                },
                                 name: {
                                     required: "Please Enter User Name",
                                     minlength: "UserName Must Be At Least 6 Characters Long",

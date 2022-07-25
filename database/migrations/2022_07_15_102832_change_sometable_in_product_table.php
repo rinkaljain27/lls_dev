@@ -17,7 +17,6 @@ class ChangeSometableInProductTable extends Migration
             //
             $table->bigInteger('product_type_id')->length(20)->unsigned()->change();
             $table->foreign('product_type_id')->references('id')->on('product_type')->onUpdate('cascade')->change();
-            
         });
     }
 

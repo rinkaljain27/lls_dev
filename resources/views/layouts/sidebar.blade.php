@@ -40,8 +40,9 @@
           ?>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'roles')  ? 'active' : '' }}" href="{{ route('roles.index') }}">Roles</a></li>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'product_type')  ? 'active' : '' }}" href="{{ route('product_type.index') }}">Product Type</a></li>
-          <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'product')  ? 'active' : '' }}" href="{{ route('product.index') }}">Product</a></li>
+          <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'product')  ? 'active' : '' }}" href="{{ route('product.index') }}">Products</a></li>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'users')  ? 'active' : '' }}" href="{{ route('users.index') }}">Users</a></li>
+          <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'commands')  ? 'active' : '' }}" href="{{ route('commands.index') }}">Commands</a></li>
         </ul>
       </div>
     </li>

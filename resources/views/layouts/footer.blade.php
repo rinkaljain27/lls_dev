@@ -6,7 +6,7 @@
         </div>
       </div>
   </div>
-   
+   <!-- Bootstrap 4 -->
     <script src="<?php echo URL::to('assets\js\vendor.bundle.base.js'); ?>" crossorigin="anonymous"></script>
     <script src="<?php echo URL::to('assets\js\select2.min.js'); ?>"></script> 
     <script src="<?php echo URL::to('assets\js\custome.js'); ?>" crossorigin="anonymous"></script>

@@ -16,7 +16,7 @@ class CreateCommandsTable extends Migration
         Schema::create('commands', function (Blueprint $table) {
             $table->id();
             $table->string('command_name',100);
-            $table->string('url',100);
+            $table->string('command_url',100);
             $table->tinyInteger('is_active')->length(1)->unsigned()->default(1);
             $table->timestamps();
             $table->softDeletes();

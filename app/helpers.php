@@ -68,4 +68,13 @@ function ValidateFromInput($input,$validate){
         return $message;
     }
 }
+function formatStatusColumn($row) {
+    $returnVal = '';
+    if ($row['is_active'] == 0) {
+        $returnVal .= "<a data-target='#status-modal' title='Change Status' onclick='javascript:setStatusModel(" . $row['id'] . "," . 1 . ")' data-toggle='modal' class='btn-warning btn-sm cursor-pointer'>Inactive</a>&nbsp;";
+    } else {
+        $returnVal .= "<a data-target='#status-modal' title='Change Status' onclick='javascript:setStatusModel(" . $row['id'] . "," . 0 . ")' data-toggle='modal' class='btn-success btn-sm cursor-pointer'>Active</a>&nbsp;";
+    }
+    return $returnVal;
+}
 

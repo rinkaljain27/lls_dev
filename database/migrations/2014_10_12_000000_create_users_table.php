@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('full_name',100);
             $table->bigInteger('mobile')->length(12)->unsigned();
             $table->string('address');
+            $table->integer('role_id')->length(20)->unsigned();
             $table->tinyInteger('is_active')->length(1)->unsigned()->default(1);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password',100);

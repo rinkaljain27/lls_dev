@@ -52,10 +52,8 @@ class ProductTypeController extends Controller
                     ->addColumn('action', function($row){
                         return getBtnHtml($row, 'product_type', true, true);
                     })
-                    ->addColumn('status', function($row){
-                        if($row['is_active'] == 1) {
-                            return 'Active';
-                        }
+                    ->addColumn('status', function ($row) {
+                        return formatStatusColumn($row);
                     })
                     ->addColumn('created_at', function($row){
                         $date = date('d/m/Y H:i:s', strtotime($row['created_at']));
@@ -65,7 +63,7 @@ class ProductTypeController extends Controller
                         $date = date('d/m/Y H:i:s', strtotime($row['updated_at']));
                         return $date;
                     })
-                    ->rawColumns(['action'])
+                    ->rawColumns(['status','action'])
                     ->toJson();
         }
     }
@@ -146,5 +144,25 @@ class ProductTypeController extends Controller
             } else {
                 return endRequest('Error', 205, 'Record not found.');
             }
+    }
+    /*
+     * @category WEBSITE
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
+     * @copyright MOBA
+     * @comment  CHANGE STATUS FUNCTION
+     * @date 2022-07-25
+     */
+    public function updateStatus(Request $request) {
+        $values = array(
+            'is_active' => $request->val,
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+        $record = ProductType::where('id', $request->id)->update($values);
+        if ($record) {
+            return endRequest('Success', 200, 'Status updated successfully.');
+        } else {
+            return endRequest('Error', 205, 'Something went wrong.');
+        }
     }
 }

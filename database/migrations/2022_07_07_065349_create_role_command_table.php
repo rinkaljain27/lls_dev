@@ -16,7 +16,7 @@ class CreateRoleCommandTable extends Migration
         Schema::create('role_command', function (Blueprint $table) {
             $table->id();
             $table->integer('role_id')->length(20)->unsigned();
-            $table->integer('cojmmand_id')->length(20)->unsigned(); 
+            $table->integer('command_id')->length(20)->unsigned(); 
         });
     }
 

@@ -18,7 +18,7 @@
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-            <a class="dropdown-item preview-item" href="#">
+            <a class="dropdown-item preview-item" href="{{ url('profile') }}">
               <div class="preview-thumbnail">
                 <div class="preview-icon bg-dark rounded-circle">
                   <i class="mdi mdi-settings text-success"></i>

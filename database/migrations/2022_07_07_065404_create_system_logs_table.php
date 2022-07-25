@@ -19,7 +19,6 @@ class CreateSystemLogsTable extends Migration
             $table->string('type',50);
             $table->string('comment',100);
             $table->string('json_data',255);
-            $table->string('show_case',10);
             $table->timestamps();
             $table->softDeletes();
         });
