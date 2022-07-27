@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommandController;
+use App\Http\Controllers\PermissionController;
 
 
 /*
@@ -44,5 +45,8 @@ Route::resource('/users',UserController::class);
 
 Route::post('commands/updateStatus',[CommandController::class,'updateStatus']);
 Route::resource('/commands',CommandController::class);
+
+Route::post('permissions/updateStatus',[PermissionController::class,'updateStatus']);
+Route::resource('/permissions',PermissionController::class);
     
    

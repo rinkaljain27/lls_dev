@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="<?php echo URL::to('assets\css\fSelect.css'); ?>" />
 <!-- partial -->
                 <div class="content-wrapper">                 
                     <div class="row ">
@@ -24,6 +25,40 @@
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Name</label>
                                                             <input type="text"  value="{{ Request::get('name') ?? old('name',isset($role) ? $role->name : '') ?? '' }}" name="name" class="form-control col-md-4" id="exampleInputName1" placeholder="Name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label">Command</label>
+                                                            <select class="search_drop form-control" multiple="multiple" name="commands[]">
+                                                                <option class="allcheck" value="all">Select All</option>
+                                                                <?php
+                                                                foreach ($command as $key => $value) {
+                                                                    $selected = '';
+                                                                    if (isset($role) && in_array($value['id'], $role_command)) {
+                                                                        $selected = 'selected';
+                                                                    }
+                                                                    echo "<option " . $selected . " class='checkbox' value='" . $value['id'] . "'>" . $value['command_name'] .' ( '.$value['command_url'].' )'."</option>";
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label">Permission</label>
+                                                            <select class="search_drop form-control" multiple="multiple" name="permissions[]">
+                                                                <option class="allcheck" value="all">Select All</option>
+                                                                <?php
+                                                                foreach ($permission as $key => $value) {
+                                                                    $selected = '';
+                                                                    if (isset($role) && in_array($value['id'], $role_permission)) {
+                                                                        $selected = 'selected';
+                                                                    }
+                                                                    echo "<option " . $selected . " class='checkbox' value='" . $value['id'] . "'>" . $value['permission_name'] . "</option>";
+                                                                }
+                                                                ?>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 
@@ -54,12 +89,24 @@
                                     minlength: 2,
                                     maxlength: 20,
                                 },
+                                commands: {
+                                    required: true,
+                                },
+                                permissions: {
+                                    required: true,
+                                },
                             },
                             messages: {
                                 name: {
                                     required: "Please Enter Role Name",
                                     minlength: "Role Name Must Be At Least 6 Characters Long",
                                     maxlength: "Please Enter Role Name No More Than 20 Characters"
+                                },
+                                commands: {
+                                    required: "Please Select Commands",
+                                },
+                                permissions: {
+                                    required: "Please Select permissions",
                                 },
                             },
                             errorPlacement: function(error, element) {
@@ -75,5 +122,19 @@
 
                         });
                     });
+                </script>
+                <script src="<?php echo URL::to('assets\js\fSelect.js'); ?>" crossorigin="anonymous"></script> 
+   
+                <script>
+                    $('.search_drop').fSelect();
+
+                    $('.allcheck').click(function () {
+                        if (!$('.allcheck').is(":checked")) {
+                            $('.checkbox').addClass('selected');
+                        } else {
+                            $('.checkbox').removeClass('selected');
+                        }
+                    });
+
                 </script>
 @endsection

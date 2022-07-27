@@ -53,6 +53,11 @@ to give a relationship in table field or give a foreign key to fields must have 
  $table->bigInteger('product_type_id')->length(20)->unsigned()->change();
  $table->foreign('product_type_id')->references('id')->on('product_type')->onUpdate('cascade')->change();
            
+creting api
+download laravel passport
+command -> composer require laravel/passport
+create route in api.php
+crete apicontroller
 
 
 

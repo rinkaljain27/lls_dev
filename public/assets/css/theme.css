@@ -119,13 +119,16 @@ a.paginate_button {
   float: left;
 }table.dataTable {
   margin-bottom: 24px !important;
-  margin-top: 29px !important;
+  margin-top: 24px !important;
 
 }thead {
   background: #2a3038;
 }
-
-
+button#btn-close {
+  background: unset;
+  color: #fff;
+  font-size: 16px;
+}
 .table-striped > tbody > tr:nth-of-type(odd) > * {
     --bs-table-accent-bg: rgba(16, 16, 16, 0.432);
     color: #e6f3ff;
@@ -248,4 +251,7 @@ button.swal2-cancel.swal2-styled,button.swal2-confirm.swal2-styled {
 textarea.form-control, textarea.asColorPicker-input, .select2-container--default textarea.select2-selection--single, .select2-container--default .select2-selection--single textarea.select2-search__field, textarea.typeahead, textarea.tt-query, textarea.tt-hint {
   min-height: 4.875rem;
   border: 1px solid;
+}
+.cursor-pointer{
+  cursor: pointer;
 }

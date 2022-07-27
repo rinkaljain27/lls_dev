@@ -43,6 +43,7 @@
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'product')  ? 'active' : '' }}" href="{{ route('product.index') }}">Products</a></li>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'users')  ? 'active' : '' }}" href="{{ route('users.index') }}">Users</a></li>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'commands')  ? 'active' : '' }}" href="{{ route('commands.index') }}">Commands</a></li>
+          <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'permissions')  ? 'active' : '' }}" href="{{ route('permissions.index') }}">Permissions</a></li>
         </ul>
       </div>
     </li>

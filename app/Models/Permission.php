@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SystemLogs extends Model
+class Permission extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class SystemLogs extends Model
      */
     use SoftDeletes;
     protected $fillable = [
-        'id', 'user_id', 'type','comment','json_data','show_case'
+        'id', 'permission_name','permission_slug','is_active'
     ];
     public $timestamps = true;
 

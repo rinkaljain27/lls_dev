@@ -23,6 +23,8 @@ function insertSystemLog($type, $comment, $json_data) {
     $log['user_id'] = auth()->check() ? auth()->user()->id : 1;
     $log['comment'] = $comment;
     $log['json_data'] = $json_data;
+    $log['show_case'] = 'internal';
+    // dd($log);
     $activityLog = new SystemLogs($log);
     $activityLog->save();
 }
@@ -77,4 +79,11 @@ function formatStatusColumn($row) {
     }
     return $returnVal;
 }
-
+function removeArrayElement($data) {
+    if ($data) {
+        if (($key = array_search("all", $data)) !== false) {
+            unset($data[$key]);
+        }
+    }
+    return $data;
+}

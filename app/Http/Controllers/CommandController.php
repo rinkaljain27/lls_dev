@@ -88,7 +88,7 @@ class CommandController extends Controller
         $input = $request->all();
         $validate = [
             'command_name' => 'required|min:2|max:20|unique:commands,command_name,' . $request->id . ',id,deleted_at,NULL',
-            'command_url' => 'required|min:2|max:20|unique:commands,command_url,' . $request->id . ',id,deleted_at,NULL',
+            'command_url' => 'required|min:2|max:99|unique:commands,command_url,' . $request->id . ',id,deleted_at,NULL',
         ];
         $message = ValidateFromInput($input,$validate);
         if($message){
