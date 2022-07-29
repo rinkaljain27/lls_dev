@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -34,7 +35,8 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $create = Role::all();
+        checkPermissions('roles-view');
+        $create = checkPermissions('roles-create', true);
         return view('roles.list')->with('create', $create);
     }
      /*
@@ -52,7 +54,8 @@ class RoleController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        return getBtnHtml($row, 'roles', true, true);
+                        $user = Auth::user();
+                        return getBtnHtml($row, 'roles', $user->hasRole('admin'), checkPermissions('roles-edit', true), checkPermissions('roles-delete', true));
                     })
                    
                     ->addColumn('created_at', function($row){
@@ -75,6 +78,7 @@ class RoleController extends Controller
      * @date 2022-07-13
      */
     public function create(Request $request) {
+        checkPermissions('roles-create');
         $command = Command::all()->where('is_active',1);
         $permission = Permission::all()->where('is_active',1);
         return view('roles.update')->with('command',$command)->with('permission',$permission);
@@ -137,6 +141,7 @@ class RoleController extends Controller
      * @date 2022-07-13
      */
     public function edit(Request $request, Role $role) {
+        checkPermissions('roles-edit');
         $command = Command::all()->where('is_active',1);
         $permission = Permission::all()->where('is_active',1);
         $role_command = $role->getCommandIds();
@@ -154,6 +159,7 @@ class RoleController extends Controller
      * @date 2022-07-13
      */
     public function destroy(Request $request) {
+        checkPermissions('roles-delete');
         $record = Role::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = Role::destroy($request->id);
             if ($record) {

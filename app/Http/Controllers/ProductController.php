@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -33,7 +34,8 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $create = Product::all();
+        checkPermissions('product-view');
+        $create = checkPermissions('product-create', true);
         return view('product.list')->with('create', $create);
     }
      /*
@@ -51,7 +53,8 @@ class ProductController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        return getBtnHtml($row, 'product', true, true);
+                        $user = Auth::user();
+                        return getBtnHtml($row, 'product', $user->hasRole('admin'), checkPermissions('product-edit', true), checkPermissions('product-delete', true));
                     })
                     ->addColumn('status', function ($row) {
                         return formatStatusColumn($row);
@@ -73,6 +76,7 @@ class ProductController extends Controller
      * @date 2022-07-15
      */
     public function create(Request $request) {
+        checkPermissions('product-create');
         $productType = ProductType::all();
         return view('product.update')->with('productType',$productType);
     }
@@ -124,6 +128,7 @@ class ProductController extends Controller
      * @date 2022-07-15
      */
     public function edit(Request $request, Product $product) {
+        checkPermissions('product-edit');
         $productType = ProductType::all();
         return view('product.update')
                         ->with('product', $product)
@@ -138,6 +143,7 @@ class ProductController extends Controller
      * @date 2022-07-15
      */
     public function destroy(Request $request) {
+        checkPermissions('product-delete');
         $record = Product::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = Product::destroy($request->id);
         if ($record) {

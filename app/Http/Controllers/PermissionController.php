@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends Controller
 {
@@ -32,7 +33,8 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
-        $create = Permission::all();
+        checkPermissions('permissions-view');
+        $create = checkPermissions('permissions-create', true);
         return view('permissions.list')->with('create', $create);
     }
      /*
@@ -50,7 +52,8 @@ class PermissionController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        return getBtnHtml($row, 'permissions', true, true);
+                        $user = Auth::user();
+                        return getBtnHtml($row, 'permissions', $user->hasRole('admin'), checkPermissions('permissions-edit', true), checkPermissions('permissions-delete', true));
                     })
                    
                     ->addColumn('created_at', function($row){
@@ -73,6 +76,7 @@ class PermissionController extends Controller
      * @date 2022-07-25
      */
     public function create(Request $request) {
+        checkPermissions('permissions-create');
         return view('permissions.update');
     }
     /*
@@ -123,6 +127,7 @@ class PermissionController extends Controller
      * @date 2022-07-25
      */
     public function edit(Request $request, Permission $permission) {
+        checkPermissions('permissions-edit');
         return view('permissions.update')
                         ->with('permission', $permission);
     }
@@ -135,6 +140,7 @@ class PermissionController extends Controller
      * @date 2022-07-25
      */
     public function destroy(Request $request) {
+        checkPermissions('permissions-delete');
         $record = Permission::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = Permission::destroy($request->id);
             if ($record) {

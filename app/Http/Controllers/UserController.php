@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use Illuminate\Support\Facades\Hash;
 use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -35,7 +36,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $create = User::all();
+        checkPermissions('users-view');
+        $create = checkPermissions('users-create', true);
         return view('users.list')->with('create', $create);
     }
      /*
@@ -54,7 +56,8 @@ class UserController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        return getBtnHtml($row, 'users', true, true);
+                        $user = Auth::user();
+                        return getBtnHtml($row, 'users', $user->hasRole('admin'), checkPermissions('users-edit', true), checkPermissions('users-delete', true));
                     })
                     ->addColumn('created_at', function($row){
                         $date = date('d/m/Y H:i:s', strtotime($row['created_at']));
@@ -76,6 +79,7 @@ class UserController extends Controller
      * @date 2022-07-18
      */
     public function create(Request $request) {
+        checkPermissions('users-create');
         $role = Role::all();
         return view('users.update')->with('role', $role);
     }
@@ -142,6 +146,7 @@ class UserController extends Controller
      * @date 2022-07-18
      */
     public function edit(Request $request, User $user) {
+        checkPermissions('users-edit');
         $role = Role::all();
         return view('users.update')
                         ->with('user', $user)
@@ -156,6 +161,7 @@ class UserController extends Controller
      * @date 2022-07-18
      */
     public function destroy(Request $request) {
+        checkPermissions('users-delete');
         $record = User::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = User::destroy($request->id);
             if ($record) {

@@ -20,7 +20,6 @@ class Product extends Model
     ];
     public $timestamps = true;
     public function productType() {
-
         return $this->belongsTo(ProductType::class, 'product_type_id', 'id');
     }
 

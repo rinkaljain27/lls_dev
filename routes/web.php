@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommandController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\systemLogController;
 
 
 /*
@@ -48,5 +49,6 @@ Route::resource('/commands',CommandController::class);
 
 Route::post('permissions/updateStatus',[PermissionController::class,'updateStatus']);
 Route::resource('/permissions',PermissionController::class);
+Route::resource('/system_logs',systemLogController::class);
     
    

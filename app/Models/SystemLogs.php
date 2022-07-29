@@ -18,5 +18,7 @@ class SystemLogs extends Model
         'id', 'user_id', 'type','comment','json_data','show_case'
     ];
     public $timestamps = true;
-
+    public function userName() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

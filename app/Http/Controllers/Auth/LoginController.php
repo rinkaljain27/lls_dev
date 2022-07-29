@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\SystemLogs;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
+use App\Models\Role;
 
 class LoginController extends Controller
 {
@@ -72,7 +73,10 @@ class LoginController extends Controller
 
             if (auth()->user()) {
                 $user = auth()->user()->toarray();
+                $role = Role::find($user['role_id']);
                 $request->session()->put('user', $user);
+                $permissions = $role->getPermissionSlugs();
+                $request->session()->put('permissions', $permissions);
                 // $data = $request->session()->all();
                 // printData($data);
                 Toastr::success('Login successfully.', 'Success');

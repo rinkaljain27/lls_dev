@@ -32,4 +32,7 @@ class Role extends Model
     public function getPermissionIds() {
         return $this->permissions()->pluck('permission_id')->toArray();
     }
+    public function getPermissionSlugs() {
+        return $this->permissions()->pluck('permission_slug')->toArray();
+    }
 }

@@ -255,3 +255,52 @@ textarea.form-control, textarea.asColorPicker-input, .select2-container--default
 .cursor-pointer{
   cursor: pointer;
 }
+.set-two-btn {
+  width: 50px !important;
+  flex: 16.2 !important;
+  max-width: fit-content !important;
+}
+span.input-group-text {
+  border-color: #fff !important;
+}
+
+
+/* date piker */
+.daterangepicker {
+
+  background-color: #2c2e33 !important;
+
+  border: 1px solid #2c2e33 !important;
+
+}
+.daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
+  background-color: #2c2e33 !important;
+  border-color: #fff !important;
+  color: #999 !important;
+}
+td.available {
+  background: #2c2e33;
+  border-color: #fff;
+  border-radius: 0px !important;
+}
+.daterangepicker .calendar-table th, .daterangepicker .calendar-table td {
+  border: 1px solid #fff !important;
+
+}
+.daterangepicker .calendar-table .next span, .daterangepicker .calendar-table .prev span {
+
+  border-color: #ffcc00 !important;
+
+}
+.daterangepicker:after {
+
+  border-bottom: 6px solid #2c2e33 !important;
+
+}
+.daterangepicker:before {
+
+  border-bottom: 7px solid #2c2e33 !important;
+}
+.daterangepicker .calendar-time {
+  display: none !important;
+}

@@ -14,6 +14,8 @@
     <script src="<?php echo URL::to('assets\js\toastr.min.js'); ?>"></script>
     <script src="<?php echo URL::to('assets\js\jquery.dataTables.min.js'); ?>"></script>
     <script src="<?php echo URL::to('assets\js\sweetalert2.min.js'); ?>"></script> 
+    <script type="text/javascript" src="<?php echo URL::to('assets\js\moment.min.js'); ?>"></script> 
+    <script type="text/javascript" src="<?php echo URL::to('assets\js\daterangepicker.min.js'); ?>"></script> 
      {!! Toastr::message() !!}
   </body>
 </html>

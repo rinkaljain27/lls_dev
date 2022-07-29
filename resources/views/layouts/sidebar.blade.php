@@ -1,3 +1,7 @@
+<?php
+$permissions = Session::get('permissions');
+$userid = Session::get('user_id');
+?>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
     <a class="sidebar-brand brand-logo" href="{{ route('dashboard') }}"><img src="<?php echo URL::to('assets\images\logo.svg'); ?> " alt="logo" /></a>
@@ -13,6 +17,7 @@
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
+    
     <li class="nav-item menu-items">
       <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
         <span class="menu-icon">
@@ -38,12 +43,15 @@
             // }
 
           ?>
+          <?php if (in_array('roles-view', $permissions)) { ?>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'roles')  ? 'active' : '' }}" href="{{ route('roles.index') }}">Roles</a></li>
+          <?php } ?>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'product_type')  ? 'active' : '' }}" href="{{ route('product_type.index') }}">Product Type</a></li>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'product')  ? 'active' : '' }}" href="{{ route('product.index') }}">Products</a></li>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'users')  ? 'active' : '' }}" href="{{ route('users.index') }}">Users</a></li>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'commands')  ? 'active' : '' }}" href="{{ route('commands.index') }}">Commands</a></li>
           <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'permissions')  ? 'active' : '' }}" href="{{ route('permissions.index') }}">Permissions</a></li>
+          <li class="nav-item"> <a class="nav-link {{ Request::segment(1) }} {{ (Request::segment(1) == 'system_logs')  ? 'active' : '' }}" href="{{ route('system_logs.index') }}">System Logs</a></li>
         </ul>
       </div>
     </li>

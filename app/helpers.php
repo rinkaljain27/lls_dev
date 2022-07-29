@@ -41,19 +41,19 @@ function endRequest($status, $responseCode, $responseMessage, $data = '') {
     return response()->json($response);
 }
 // crud buttons
-function getBtnHtml($row, $module, $editBtn, $deleteBtn) {
+function getBtnHtml($row, $module, $is_admin, $editBtn, $deleteBtn) {
     $actionBtn = '';
     if ($module == 'user') {
         $id = $row->userid;
     } else {
         $id = $row['id'];
     }
-    if ($editBtn) {
+    if ($is_admin || $editBtn) {
         $actionBtn .= '<a href="' . $module . '/' .$id.'/edit" class="edit btn btn-success btn-sm ">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                     </a>&nbsp;';
     }
-    if ($deleteBtn) {
+    if ($is_admin || $deleteBtn) {
         $actionBtn .= '<a href="javascript:void(0);
         " id="delete-product" onclick="deleteConfirmation(' .$id.')" class="delete btn btn-danger btn-sm ">
                     <i class="fa fa-trash" aria-hidden="true"></i>
@@ -86,4 +86,17 @@ function removeArrayElement($data) {
         }
     }
     return $data;
+}
+function checkPermissions($url_slug, $btn = false) {
+    $permissions = Session::get('permissions');
+    if ($btn) {
+        if (!in_array($url_slug, $permissions)) {
+            return false;
+        }
+        return true;
+    } else {
+        if (!in_array($url_slug, $permissions)) {
+            return abort(404);
+        }
+    }
 }

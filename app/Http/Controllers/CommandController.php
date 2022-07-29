@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class CommandController extends Controller
 {
@@ -32,7 +33,8 @@ class CommandController extends Controller
      */
     public function index(Request $request)
     {
-        $create = Command::all();
+        checkPermissions('commands-view');
+        $create = checkPermissions('commands-create', true);
         return view('commands.list')->with('create', $create);
     }
      /*
@@ -50,7 +52,8 @@ class CommandController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        return getBtnHtml($row, 'commands', true, true);
+                        $user = Auth::user();
+                        return getBtnHtml($row, 'commands', $user->hasRole('admin'), checkPermissions('commands-edit', true), checkPermissions('commands-delete', true));
                     })
                    
                     ->addColumn('created_at', function($row){
@@ -73,6 +76,7 @@ class CommandController extends Controller
      * @date 2022-07-25
      */
     public function create(Request $request) {
+        checkPermissions('commands-create');
         return view('commands.update');
     }
     /*
@@ -123,6 +127,7 @@ class CommandController extends Controller
      * @date 2022-07-25
      */
     public function edit(Request $request, Command $command) {
+        checkPermissions('commands-edit');
         return view('commands.update')
                         ->with('command', $command);
     }
@@ -135,6 +140,7 @@ class CommandController extends Controller
      * @date 2022-07-25
      */
     public function destroy(Request $request) {
+        checkPermissions('commands-delete');
         $record = Command::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = Command::destroy($request->id);
             if ($record) {
