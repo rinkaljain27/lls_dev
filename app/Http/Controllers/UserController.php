@@ -246,6 +246,14 @@ class UserController extends Controller
             return Redirect::route('profile');
         }
     }
+    /*
+     * @category WEBSITE
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
+     * @copyright MOBA
+     * @comment  RECORD VALIDATE
+     * @date 2022-08-08
+     */
     public function validateRecord(Request $request)
     {
         $id = $request->id;
@@ -273,6 +281,14 @@ class UserController extends Controller
             exit;
         }
     }
+    /*
+     * @category WEBSITE
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
+     * @copyright MOBA
+     * @comment PROFILE RECORD VALIDATE
+     * @date 2022-08-08
+     */
     public function validateProfileRecord(Request $request)
     {
         $id = $request->id;

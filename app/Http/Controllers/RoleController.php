@@ -190,6 +190,14 @@ class RoleController extends Controller
             return endRequest('Error', 205, 'Something went wrong.');
         }
     }
+    /*
+     * @category WEBSITE
+     * @author Original Author <rjain@moba.de>
+     * @author Another Author <ksanghavi@moba.de>
+     * @copyright MOBA
+     * @comment  RECORD VALIDATE
+     * @date 2022-08-08
+     */
     public function validateRecord(Request $request)
     {
         $id = $request->id;
