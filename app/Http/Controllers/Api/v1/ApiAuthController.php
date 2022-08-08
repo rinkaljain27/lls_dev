@@ -44,6 +44,8 @@ class ApiAuthController extends CommonApiController
                             'user_access_token' => $user_access_token,
                             'user' => $user,
                         ];
+                        $api_response = CommonApiController::endRequest(true, 200, 'Login successfully.');
+                        insertApiLog('App Login','appUserLogin',$request->header('user-agent'),$api_response);
                         return CommonApiController::endRequest(true, 200, 'Login successfully.', array($response));
                     }else{
                         return CommonApiController::endRequest(false, 205, 'Invalid Credentials.');
@@ -68,6 +70,8 @@ class ApiAuthController extends CommonApiController
             $accessToken = auth()->user()->token();
             $token = $request->user()->tokens->find($accessToken);
             $token->revoke();
+            $api_response = CommonApiController::endRequest(true, 200, 'User Logout Successfully.');
+            insertApiLog('App Logout','appUserLogout',$request->header('user-agent'),$api_response);
             return CommonApiController::endRequest(true, 200, 'User Logout Successfully.');
         } catch (Exception $ex) {
             return CommonApiController::endRequest(false, 205, $ex->getMessage());

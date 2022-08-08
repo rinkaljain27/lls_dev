@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
@@ -114,12 +115,12 @@ class RoleController extends Controller
 
             $old_permissions = $role->getPermissionIds();
             $role->permissions()->detach($old_permissions);
-            insertSystemLog('Update Role From Web App',ucfirst(auth()->user()->name).' Update Role From Web App',$request->header('user-agent'));
+            insertSystemLog('Update Role',ucfirst(auth()->user()->name).' Update Role From Web App',$request->header('user-agent'));
         } else {
             $role = new Role();
             $role->created_at = date('Y-m-d H:i:s');
             $role->updated_at = date('Y-m-d H:i:s');
-            insertSystemLog('Insert Role From Web App',ucfirst(auth()->user()->name).' Insert Role From Web App',$request->header('user-agent'));
+            insertSystemLog('Insert Role',ucfirst(auth()->user()->name).' Insert Role From Web App',$request->header('user-agent'));
         }
         $role->name = $request->name;
         $role->save();
@@ -163,7 +164,7 @@ class RoleController extends Controller
         $record = Role::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = Role::destroy($request->id);
             if ($record) {
-                insertSystemLog('Delete Role From Web App',ucfirst(auth()->user()->name).' Delete Role From Web App',$request->header('user-agent'));
+                insertSystemLog('Delete Role',ucfirst(auth()->user()->name).' Delete Role From Web App',$request->header('user-agent'));
                 return endRequest('Success', 200, 'Record Deleted Successfully.');
             } else {
                 return endRequest('Error', 205, 'Record Not Found.');
@@ -187,6 +188,29 @@ class RoleController extends Controller
             return endRequest('Success', 200, 'Status updated successfully.');
         } else {
             return endRequest('Error', 205, 'Something went wrong.');
+        }
+    }
+    public function validateRecord(Request $request)
+    {
+        $id = $request->id;
+        $name = $request->name;
+        
+        if ($name) {
+            $query = DB::table('roles');
+            if($name){
+                $query->where('name',$name)->where('id','!=',$id);
+            }
+            $user = $query->first();
+            if($user){
+                echo json_encode(FALSE);
+                exit;
+            }else{
+                echo json_encode(TRUE);
+                exit; 
+            }
+        } else {
+            echo json_encode(FALSE);
+            exit;
         }
     }
 }

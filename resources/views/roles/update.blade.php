@@ -24,7 +24,7 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Name</label>
-                                                            <input type="text"  value="{{ Request::get('name') ?? old('name',isset($role) ? $role->name : '') ?? '' }}" name="name" class="form-control col-md-4" id="exampleInputName1" placeholder="Name">
+                                                            <input type="text"  value="{{ Request::get('name') ?? old('name',isset($role) ? $role->name : '') ?? '' }}" name="name" class="form-control col-md-4" id="name" placeholder="Name">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
@@ -38,7 +38,7 @@
                                                                     if (isset($role) && in_array($value['id'], $role_command)) {
                                                                         $selected = 'selected';
                                                                     }
-                                                                    echo "<option " . $selected . " class='checkbox' value='" . $value['id'] . "'>" . $value['command_name'] .' ( '.$value['command_url'].' )'."</option>";
+                                                                    echo "<option " . $selected . " class='checkbox' value='" . $value['id'] . "'>" . $value['command_name'] ."</option>";
                                                                 }
                                                                 ?>
                                                             </select>
@@ -88,6 +88,20 @@
                                     required: true,
                                     minlength: 2,
                                     maxlength: 20,
+                                    remote: {
+                                        url: "{{ url('roles/validateRecord') }}",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "post",
+                                        data: {
+                                            name : function () {
+                                                return $("#roles-form #name").val();
+                                            }, id: function () {
+                                                return $("#roles-form #id").val();
+                                            }
+                                        }
+                                    }
                                 },
                                 commands: {
                                     required: true,
@@ -100,7 +114,8 @@
                                 name: {
                                     required: "Please Enter Role Name",
                                     minlength: "Role Name Must Be At Least 6 Characters Long",
-                                    maxlength: "Please Enter Role Name No More Than 20 Characters"
+                                    maxlength: "Please Enter Role Name No More Than 20 Characters",
+                                    remote: "Role Name Already Exist.",
                                 },
                                 commands: {
                                     required: "Please Select Commands",

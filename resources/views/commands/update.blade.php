@@ -23,13 +23,13 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Command Name</label>
-                                                            <input type="text"  value="{{ Request::get('command_name') ?? old('command_name',isset($command) ? $command->command_name : '') ?? '' }}" name="command_name" class="form-control col-md-4" id="" placeholder="Command Name">
+                                                            <input type="text"  value="{{ Request::get('command_name') ?? old('command_name',isset($command) ? $command->command_name : '') ?? '' }}" name="command_name" class="form-control col-md-4" id="command_name" placeholder="Command Name">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Command URL</label>
-                                                            <input type="text"  value="{{ Request::get('command_url') ?? old('command_url',isset($command) ? $command->command_url : '') ?? '' }}" name="command_url" class="form-control col-md-4" id="" placeholder="Command URL">
+                                                            <input type="text"  value="{{ Request::get('command_url') ?? old('command_url',isset($command) ? $command->command_url : '') ?? '' }}" name="command_url" class="form-control col-md-4" id="command_url" placeholder="Command URL">
                                                         </div>
                                                     </div>
                                                 
@@ -59,23 +59,53 @@
                                     required: true,
                                     minlength: 2,
                                     maxlength: 20,
+                                    remote: {
+                                        url: "{{ url('commands/validateRecord') }}",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "post",
+                                        data: {
+                                            command_name : function () {
+                                                return $("#commands-form #command_name").val();
+                                            }, id: function () {
+                                                return $("#commands-form #id").val();
+                                            }
+                                        }
+                                    }
                                 },
                                 command_url: {
                                     required: true,
                                     minlength: 2,
                                     maxlength: 99,
+                                    remote: {
+                                        url: "{{ url('commands/validateRecord') }}",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "post",
+                                        data: {
+                                            command_url : function () {
+                                                return $("#commands-form #command_url").val();
+                                            }, id: function () {
+                                                return $("#commands-form #id").val();
+                                            }
+                                        }
+                                    }
                                 },
                             },
                             messages: {
                                 command_name: {
                                     required: "Please Enter Command Name",
                                     minlength: "Command Name Must Be At Least 6 Characters Long",
-                                    maxlength: "Please Enter Command Name No More Than 20 Characters"
+                                    maxlength: "Please Enter Command Name No More Than 20 Characters",
+                                    remote: "Command Name Already Exist.",
                                 },
                                 command_url: {
                                     required: "Please Enter Command URL",
                                     minlength: "Command URL Must Be At Least 6 Characters Long",
-                                    maxlength: "Please Enter Command URL No More Than 99 Characters"
+                                    maxlength: "Please Enter Command URL No More Than 99 Characters",
+                                    remote: "Command URL Already Exist.",
                                 },
                             },
                             errorPlacement: function(error, element) {

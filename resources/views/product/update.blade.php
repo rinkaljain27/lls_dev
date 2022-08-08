@@ -23,7 +23,7 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Product Name</label>
-                                                            <input type="text"  value="{{ Request::get('product_name') ?? old('product_name',isset($product) ? $product->product_name : '') ?? '' }}" name="product_name" class="form-control col-md-4" id="exampleInputName1" placeholder="Product Name">
+                                                            <input type="text"  value="{{ Request::get('product_name') ?? old('product_name',isset($product) ? $product->product_name : '') ?? '' }}" name="product_name" class="form-control col-md-4" id="product_name" placeholder="Product Name">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
@@ -63,6 +63,20 @@
                                     required: true,
                                     minlength: 2,
                                     maxlength: 20,
+                                    remote: {
+                                        url: "{{ url('product/validateRecord') }}",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "post",
+                                        data: {
+                                            product_name : function () {
+                                                return $("#product-form #product_name").val();
+                                            }, id: function () {
+                                                return $("#product-form #id").val();
+                                            }
+                                        }
+                                    }
                                 },
                                 product_type_id: {
                                     required: true,
@@ -72,7 +86,8 @@
                                 product_name: {
                                     required: "Please Enter Product Name",
                                     minlength: "Product Name Must Be At Least 6 Characters Long",
-                                    maxlength: "Please Enter Product Name No More Than 20 Characters"
+                                    maxlength: "Please Enter Product Name No More Than 20 Characters",
+                                    remote: "Product Name Already Exist.",
                                 },
                                 product_type_id: {
                                     required: "Please Select Product Type",

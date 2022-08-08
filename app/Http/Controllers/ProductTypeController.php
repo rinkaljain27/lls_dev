@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductTypeController extends Controller
 {
@@ -103,12 +104,12 @@ class ProductTypeController extends Controller
         }
         if ($request->id) {
             $product_type = ProductType::find($request->id);
-            insertSystemLog('Update Product Type From Web App',ucfirst(auth()->user()->name).' Update Product Type From Web App',$request->header('user-agent'));
+            insertSystemLog('Update Product Type',ucfirst(auth()->user()->name).' Update Product Type From Web App',$request->header('user-agent'));
         } else {
             $product_type = new ProductType();
             $product_type->created_at = date('Y-m-d H:i:s');
             $product_type->updated_at = date('Y-m-d H:i:s');
-            insertSystemLog('Insert Product Type From Web App',ucfirst(auth()->user()->name).' Insert Product Type From Web App',$request->header('user-agent'));
+            insertSystemLog('Insert Product Type',ucfirst(auth()->user()->name).' Insert Product Type From Web App',$request->header('user-agent'));
         }
         $product_type->product_type = $request->product_type;
         $product_type->save();
@@ -145,7 +146,7 @@ class ProductTypeController extends Controller
         $record = ProductType::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = ProductType::destroy($request->id);
             if ($record) {
-                insertSystemLog('Delete Product Type From Web App',ucfirst(auth()->user()->name).' Delete Product Type From Web App',$request->header('user-agent'));
+                insertSystemLog('Delete Product Type',ucfirst(auth()->user()->name).' Delete Product Type From Web App',$request->header('user-agent'));
                 return endRequest('Success', 200, 'Record Deleted Successfully.');
             } else {
                 return endRequest('Error', 205, 'Record not found.');
@@ -169,6 +170,29 @@ class ProductTypeController extends Controller
             return endRequest('Success', 200, 'Status updated successfully.');
         } else {
             return endRequest('Error', 205, 'Something went wrong.');
+        }
+    }
+    public function validateRecord(Request $request)
+    {
+        $id = $request->id;
+        $product_type = $request->product_type;
+        
+        if ($product_type) {
+            $query = DB::table('product_type');
+            if($product_type){
+                $query->where('product_type',$product_type)->where('id','!=',$id);
+            }
+            $user = $query->first();
+            if($user){
+                echo json_encode(FALSE);
+                exit;
+            }else{
+                echo json_encode(TRUE);
+                exit; 
+            }
+        } else {
+            echo json_encode(FALSE);
+            exit;
         }
     }
 }

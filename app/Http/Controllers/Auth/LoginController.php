@@ -77,7 +77,7 @@ class LoginController extends Controller
                 $request->session()->put('user', $user);
                 $permissions = $role->getPermissionSlugs();
                 $request->session()->put('permissions', $permissions);
-                // $data = $request->session()->all();
+                $data = $request->session()->all();
                 // printData($data);
                 Toastr::success('Login successfully.', 'Success');
                 return Redirect::route('dashboard');

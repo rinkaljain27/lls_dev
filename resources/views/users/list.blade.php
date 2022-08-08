@@ -22,6 +22,7 @@
                                         <thead>
                                         <tr>
                                             <th> User Name </th>
+                                            <th> User Role </th>
                                             <th> Full Name </th>
                                             <th> User Email </th>
                                             <th> User Mobile </th>
@@ -70,6 +71,9 @@
 
                         var columns = [{
                                 data: 'name',
+                                name: 'name'
+                            },{
+                                data: 'roles.name',
                                 name: 'name'
                             },{
                                 data: 'full_name',

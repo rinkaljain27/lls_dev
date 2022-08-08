@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\SystemLogs;
+use App\Models\ApiLogs;
 use Illuminate\Support\Facades\Validator;
 
 /* PRINT DATA */
@@ -28,6 +29,20 @@ function insertSystemLog($type, $comment, $json_data) {
     $activityLog = new SystemLogs($log);
     $activityLog->save();
 }
+
+/* Store Api Log Activity */
+function insertApiLog($api_type, $api_name, $request_data, $response_data) {
+    $log['api_type'] = $api_type;
+    $log['user_id'] = auth()->check() ? auth()->user()->id : 1;
+    $log['api_name'] = $api_name;
+    $log['request_data'] = $request_data;
+    $log['response_data'] = $response_data;
+    // dd($response_data);
+    // dd($log);
+    $activityLog = new ApiLogs($log);
+    $activityLog->save();
+}
+
 // send Response
 function endRequest($status, $responseCode, $responseMessage, $data = '') {
     $response = array();
@@ -99,4 +114,31 @@ function checkPermissions($url_slug, $btn = false) {
             return abort(404);
         }
     }
+}
+
+function getLastSQL($break = true) {
+    $queries = DB::getQueryLog();
+    $last_query = 'No query found.';
+    if ($queries) {
+        $last_query = end($queries);
+        $last_query = bindDataToQuery($last_query);
+    }
+    echo $last_query;
+    if ($break) {
+        die;
+    }
+}
+
+function bindDataToQuery($queryItem) {
+    $query = $queryItem['query'];
+    $bindings = $queryItem['bindings'];
+    $arr = explode('?', $query);
+    $res = '';
+    foreach ($arr as $idx => $ele) {
+        if ($idx < count($arr) - 1) {
+            $res = $res . $ele . "'" . $bindings[$idx] . "'";
+        }
+    }
+    $res = $res . $arr[count($arr) - 1];
+    return $res;
 }

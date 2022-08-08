@@ -10,9 +10,11 @@
       
       <ul class="navbar-nav navbar-nav-right">
         <li class="nav-item dropdown">
-          <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
+          <a class="nav-link btn btn-default btn-flat" id="profileDropdown" href="#" data-bs-toggle="dropdown">
             <div class="navbar-profile">
-              <img class="img-xs rounded-circle" src="<?php echo URL::to('assets\images\face15.jpg'); ?>" alt="">
+
+              <!-- <img class="img-xs rounded-circle fa fa-user-circle-o fa-yellow"  alt=""> -->
+<i class="rounded-circle fa fa-circle-user"></i>
               <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ ucfirst(Auth::user()->name); }}</p>
               <i class="mdi mdi-menu-down d-none d-sm-block"></i>
             </div>

@@ -12,6 +12,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Hash;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -51,7 +52,7 @@ class UserController extends Controller
 
     public function show(Request $request) {
         if ($request->ajax()) {
-            $data = User::all()->toarray();
+            $data = User::with('roles')->get()->toarray();
             // dd($data);
             return Datatables::of($data)
                     ->addIndexColumn()
@@ -100,7 +101,6 @@ class UserController extends Controller
             'full_name' => 'required|min:2|max:70',
             'email' => 'required|min:2|max:70|unique:users,email,' . $request->id . ',id,deleted_at,NULL',
             'mobile' => 'required',
-            'address' => 'required',
             'password' => 'required_with:c_password|same:c_password|min:6|max:25',
             'c_password' => 'min:6|max:25',
         ];
@@ -111,12 +111,12 @@ class UserController extends Controller
         }
         if ($request->id) {
             $user = User::find($request->id);
-            insertSystemLog('Update User From Web App',ucfirst(auth()->user()->name).' Update User From Web App',$request->header('user-agent'));
+            insertSystemLog('Update User',ucfirst(auth()->user()->name).' Update User From Web App',$request->header('user-agent'));
         } else {
             $user = new User();
             $user->created_at = date('Y-m-d H:i:s');
             $user->updated_at = date('Y-m-d H:i:s');
-            insertSystemLog('Insert User From Web App',ucfirst(auth()->user()->name).' Insert User From Web App',$request->header('user-agent'));
+            insertSystemLog('Insert User',ucfirst(auth()->user()->name).' Insert User From Web App',$request->header('user-agent'));
         }
         $user->name = $request->name;
         $user->role_id = $request->role_id;
@@ -124,9 +124,10 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->mobile = $request->mobile;
         $user->address = $request->address;
-        if ($request->password == ''){
+        if (!$request->password == ''){
             $password = Hash::make('password');
         }
+        
         $user->password = $password;
         // dd($user);
         $user->save();
@@ -165,7 +166,7 @@ class UserController extends Controller
         $record = User::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = User::destroy($request->id);
             if ($record) {
-                insertSystemLog('Delete User From Web App',ucfirst(auth()->user()->name).' Delete User From Web App',$request->header('user-agent'));
+                insertSystemLog('Delete User',ucfirst(auth()->user()->name).' Delete User From Web App',$request->header('user-agent'));
                 return endRequest('Success', 200, 'Record Deleted Successfully.');
             } else {
                 return endRequest('Error', 205, 'Record Not Found.');
@@ -243,6 +244,60 @@ class UserController extends Controller
                         ->update($userData);
             Toastr::success('Profile Updated Successfully', 'Success');
             return Redirect::route('profile');
+        }
+    }
+    public function validateRecord(Request $request)
+    {
+        $id = $request->id;
+        $email = $request->email;
+        $name = $request->name;
+        
+        if ($email || $name) {
+            $query = DB::table('users');
+            if ($email){
+                $query->where('email',$email)->where('id','!=',$id);
+            }
+            if($name){
+                $query->where('name',$name)->where('id','!=',$id);
+            }
+            $user = $query->first();
+            if($user){
+                echo json_encode(FALSE);
+                exit;
+            }else{
+                echo json_encode(TRUE);
+                exit; 
+            }
+        } else {
+            echo json_encode(FALSE);
+            exit;
+        }
+    }
+    public function validateProfileRecord(Request $request)
+    {
+        $id = $request->id;
+        $email = $request->email;
+        $name = $request->name;
+        
+        if ($email || $name) {
+            $query = DB::table('users');
+            if ($email){
+                $query->where('email',$email)->where('id','!=',$id);
+            }
+            if($name){
+                $query->where('name',$name)->where('id','!=',$id);
+            }
+            $user = $query->first();
+            if($user){
+                echo json_encode(FALSE);
+                exit;
+            }else{
+                echo json_encode(TRUE);
+                exit; 
+            }
+        } else {
+            echo json_encode(FALSE);
+            exit;
         }
     }
 }

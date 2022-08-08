@@ -51,6 +51,8 @@ class AdminPermissionSeeder extends Seeder
             ['id'=>28, 'permission_name' => 'Commands - View', 'permission_slug' => 'commands-view'],
             ['id'=>29, 'permission_name' => 'Commands - Delete', 'permission_slug' => 'commands-delete'],
             ['id'=>30, 'permission_name' => 'Commands - Export', 'permission_slug' => 'commands-export'],
+           
+            ['id'=>31, 'permission_name' => 'Systemlog - View', 'permission_slug' => 'system-log-view'],
             
         ];
         foreach ($permission as $permissions) {

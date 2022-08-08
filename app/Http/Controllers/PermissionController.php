@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PermissionController extends Controller
 {
@@ -101,12 +102,12 @@ class PermissionController extends Controller
         }
         if ($request->id) {
             $permission = Permission::find($request->id);
-            insertSystemLog('Update Permission From Web App',ucfirst(auth()->user()->name).' Update Permission From Web App',$request->header('user-agent'));
+            insertSystemLog('Update Permission',ucfirst(auth()->user()->name).' Update Permission From Web App',$request->header('user-agent'));
         } else {
             $permission = new Permission();
             $permission->created_at = date('Y-m-d H:i:s');
             $permission->updated_at = date('Y-m-d H:i:s');
-            insertSystemLog('Insert Permission From Web App',ucfirst(auth()->user()->name).' Insert Permission From Web App',$request->header('user-agent'));
+            insertSystemLog('Insert Permission',ucfirst(auth()->user()->name).' Insert Permission From Web App',$request->header('user-agent'));
         }
         $permission->permission_name = $request->permission_name;
         $permission->permission_slug = $request->permission_slug;
@@ -144,7 +145,7 @@ class PermissionController extends Controller
         $record = Permission::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = Permission::destroy($request->id);
             if ($record) {
-                insertSystemLog('Delete Permission From Web App',ucfirst(auth()->user()->name).' Delete Permission From Web App',$request->header('user-agent'));
+                insertSystemLog('Delete Permission',ucfirst(auth()->user()->name).' Delete Permission From Web App',$request->header('user-agent'));
                 return endRequest('Success', 200, 'Record Deleted Successfully.');
             } else {
                 return endRequest('Error', 205, 'Record Not Found.');
@@ -168,6 +169,33 @@ class PermissionController extends Controller
             return endRequest('Success', 200, 'Status updated successfully.');
         } else {
             return endRequest('Error', 205, 'Something went wrong.');
+        }
+    }
+    public function validateRecord(Request $request)
+    {
+        $id = $request->id;
+        $permission_name = $request->permission_name;
+        $permission_slug = $request->permission_slug;
+        
+        if ($permission_name || $permission_slug) {
+            $query = DB::table('permissions');
+            if ($permission_name){
+                $query->where('permission_name',$permission_name)->where('id','!=',$id);
+            }
+            if($permission_slug){
+                $query->where('permission_slug',$permission_slug)->where('id','!=',$id);
+            }
+            $user = $query->first();
+            if($user){
+                echo json_encode(FALSE);
+                exit;
+            }else{
+                echo json_encode(TRUE);
+                exit; 
+            }
+        } else {
+            echo json_encode(FALSE);
+            exit;
         }
     }
 }

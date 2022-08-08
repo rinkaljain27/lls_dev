@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CommandController extends Controller
 {
@@ -101,12 +102,12 @@ class CommandController extends Controller
         }
         if ($request->id) {
             $command = Command::find($request->id);
-            insertSystemLog('Update Command From Web App',ucfirst(auth()->user()->name).' Update Command From Web App',$request->header('user-agent'));
+            insertSystemLog('Update Command',ucfirst(auth()->user()->name).' Update Command From Web App',$request->header('user-agent'));
         } else {
             $command = new Command();
             $command->created_at = date('Y-m-d H:i:s');
             $command->updated_at = date('Y-m-d H:i:s');
-            insertSystemLog('Insert Command From Web App',ucfirst(auth()->user()->name).' Insert Command From Web App',$request->header('user-agent'));
+            insertSystemLog('Insert Command',ucfirst(auth()->user()->name).' Insert Command From Web App',$request->header('user-agent'));
         }
         $command->command_name = $request->command_name;
         $command->command_url = $request->command_url;
@@ -144,7 +145,7 @@ class CommandController extends Controller
         $record = Command::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = Command::destroy($request->id);
             if ($record) {
-                insertSystemLog('Delete Command From Web App',ucfirst(auth()->user()->name).' Delete Command From Web App',$request->header('user-agent'));
+                insertSystemLog('Delete Command',ucfirst(auth()->user()->name).' Delete Command From Web App',$request->header('user-agent'));
                 return endRequest('Success', 200, 'Record Deleted Successfully.');
             } else {
                 return endRequest('Error', 205, 'Record Not Found.');
@@ -168,6 +169,33 @@ class CommandController extends Controller
             return endRequest('Success', 200, 'Status updated successfully.');
         } else {
             return endRequest('Error', 205, 'Something went wrong.');
+        }
+    }
+    public function validateRecord(Request $request)
+    {
+        $id = $request->id;
+        $command_name = $request->command_name;
+        $command_url = $request->command_url;
+        
+        if ($command_name || $command_url) {
+            $query = DB::table('commands');
+            if ($command_name){
+                $query->where('command_name',$command_name)->where('id','!=',$id);
+            }
+            if($command_url){
+                $query->where('command_url',$command_url)->where('id','!=',$id);
+            }
+            $user = $query->first();
+            if($user){
+                echo json_encode(FALSE);
+                exit;
+            }else{
+                echo json_encode(TRUE);
+                exit; 
+            }
+        } else {
+            echo json_encode(FALSE);
+            exit;
         }
     }
 }

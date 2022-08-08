@@ -23,13 +23,13 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Permission Name</label>
-                                                            <input type="text"  value="{{ Request::get('permission_name') ?? old('permission_name',isset($permission) ? $permission->permission_name : '') ?? '' }}" name="permission_name" class="form-control col-md-4" id="" placeholder="Permission Name">
+                                                            <input type="text"  value="{{ Request::get('permission_name') ?? old('permission_name',isset($permission) ? $permission->permission_name : '') ?? '' }}" name="permission_name" class="form-control col-md-4" id="permission_name" placeholder="Permission Name">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Permission Slug</label>
-                                                            <input type="text"  value="{{ Request::get('permission_slug') ?? old('permission_slug',isset($permission) ? $permission->permission_slug : '') ?? '' }}" name="permission_slug" class="form-control col-md-4" id="" placeholder="Permission Slug">
+                                                            <input type="text"  value="{{ Request::get('permission_slug') ?? old('permission_slug',isset($permission) ? $permission->permission_slug : '') ?? '' }}" name="permission_slug" class="form-control col-md-4" id="permission_slug" placeholder="Permission Slug">
                                                         </div>
                                                     </div>
                                                 
@@ -59,23 +59,54 @@
                                     required: true,
                                     minlength: 2,
                                     maxlength: 20,
+                                    remote: {
+                                        url: "{{ url('permissions/validateRecord') }}",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "post",
+                                        data: {
+                                            permission_name : function () {
+                                                return $("#permissions-form #permission_name").val();
+                                            }, id: function () {
+                                                return $("#permissions-form #id").val();
+                                            }
+                                        }
+                                    }
                                 },
                                 permission_slug: {
                                     required: true,
                                     minlength: 2,
                                     maxlength: 20,
+                                    remote: {
+                                        url: "{{ url('permissions/validateRecord') }}",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "post",
+                                        data: {
+                                            permission_slug : function () {
+                                                return $("#permissions-form #permission_slug").val();
+                                            }, id: function () {
+                                                return $("#permissions-form #id").val();
+                                            }
+                                        }
+                                    }
                                 },
                             },
                             messages: {
                                 permission_name: {
                                     required: "Please Enter Permission Name",
                                     minlength: "Permission Name Must Be At Least 6 Characters Long",
-                                    maxlength: "Please Enter Permission Name No More Than 20 Characters"
+                                    maxlength: "Please Enter Permission Name No More Than 20 Characters",
+                                    remote: "Permission Name Already Exist.",
+                                
                                 },
                                 permission_slug: {
                                     required: "Please Enter Permission Slug",
                                     minlength: "Permission Slug Must Be At Least 6 Characters Long",
-                                    maxlength: "Please Enter Permission Slug No More Than 20 Characters"
+                                    maxlength: "Please Enter Permission Slug No More Than 20 Characters",
+                                    remote: "Permission Slug Already Exist.",
                                 },
                             },
                             errorPlacement: function(error, element) {

@@ -23,7 +23,7 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Product Type</label>
-                                                            <input type="text"  value="{{ Request::get('product_type') ?? old('product_type',isset($product_type) ? $product_type->product_type : '') ?? '' }}" name="product_type" class="form-control col-md-4" id="exampleInputName1" placeholder="Product Type">
+                                                            <input type="text"  value="{{ Request::get('product_type') ?? old('product_type',isset($product_type) ? $product_type->product_type : '') ?? '' }}" name="product_type" class="form-control col-md-4" id="product_type" placeholder="Product Type">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -52,13 +52,28 @@
                                     required: true,
                                     minlength: 2,
                                     maxlength: 20,
+                                    remote: {
+                                        url: "{{ url('product_type/validateRecord') }}",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "post",
+                                        data: {
+                                            product_type : function () {
+                                                return $("#productType-form #product_type").val();
+                                            }, id: function () {
+                                                return $("#productType-form #id").val();
+                                            }
+                                        }
+                                    }
                                 },
                             },
                             messages: {
                                 product_type: {
                                     required: "Please Enter Product Type",
                                     minlength: "Product Type Must Be At Least 6 Characters Long",
-                                    maxlength: "Please Enter Product Type No More Than 20 Characters"
+                                    maxlength: "Please Enter Product Type No More Than 20 Characters",
+                                    remote: "Product Type Already Exist.",
                                 },
                             },
                             errorPlacement: function(error, element) {

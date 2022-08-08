@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr; 
 use DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -102,12 +103,12 @@ class ProductController extends Controller
         }
         if ($request->id) {
             $product = Product::find($request->id);
-            insertSystemLog('Update Product From Web App',ucfirst(auth()->user()->name).' Update Product From Web App',$request->header('user-agent'));
+            insertSystemLog('Update Product',ucfirst(auth()->user()->name).' Update Product From Web App',$request->header('user-agent'));
         } else {
             $product = new Product();
             $product->created_at = date('Y-m-d H:i:s');
             $product->updated_at = date('Y-m-d H:i:s');
-            insertSystemLog('Insert Product From Web App',ucfirst(auth()->user()->name).' Insert Product From Web App',$request->header('user-agent'));
+            insertSystemLog('Insert Product',ucfirst(auth()->user()->name).' Insert Product From Web App',$request->header('user-agent'));
         }
         $product->product_name = $request->product_name;
         $product->product_type_id = $request->product_type_id;
@@ -147,7 +148,7 @@ class ProductController extends Controller
         $record = Product::where('id', $request->id)->update(['is_active' => 0 , 'deleted_at' => date('Y-m-d H:i:s')]);
         // $record = Product::destroy($request->id);
         if ($record) {
-                insertSystemLog('Delete Product From Web App',ucfirst(auth()->user()->name).' Delete Product From Web App',$request->header('user-agent'));
+                insertSystemLog('Delete Product',ucfirst(auth()->user()->name).' Delete Product From Web App',$request->header('user-agent'));
                 return endRequest('Success', 200, 'Record Deleted Successfully.');
             } else {
                 return endRequest('Error', 205, 'Record Not Found.');
@@ -171,6 +172,29 @@ class ProductController extends Controller
             return endRequest('Success', 200, 'Status updated successfully.');
         } else {
             return endRequest('Error', 205, 'Something went wrong.');
+        }
+    }
+    public function validateRecord(Request $request)
+    {
+        $id = $request->id;
+        $product_name = $request->product_name;
+        
+        if ($product_name) {
+            $query = DB::table('product');
+            if($product_name){
+                $query->where('product_name',$product_name)->where('id','!=',$id);
+            }
+            $user = $query->first();
+            if($user){
+                echo json_encode(FALSE);
+                exit;
+            }else{
+                echo json_encode(TRUE);
+                exit; 
+            }
+        } else {
+            echo json_encode(FALSE);
+            exit;
         }
     }
 }

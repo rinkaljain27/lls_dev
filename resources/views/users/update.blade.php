@@ -34,7 +34,7 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">UserName</label>
-                                                            <input type="text"  value="{{ Request::get('name') ?? old('name',isset($user) ? $user->name : '') ?? '' }}" name="name" class="form-control col-md-4" id="" placeholder="UserName" >
+                                                            <input type="text"  value="{{ Request::get('name') ?? old('name',isset($user) ? $user->name : '') ?? '' }}" name="name" class="form-control col-md-4" id="name" placeholder="UserName" >
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
@@ -46,7 +46,7 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-4 control-label">Email</label>
-                                                            <input type="text"  value="{{ Request::get('email') ?? old('email',isset($user) ? $user->email : '') ?? '' }}" name="email" class="form-control col-md-4" id="" placeholder="Email">
+                                                            <input type="text"  value="{{ Request::get('email') ?? old('email',isset($user) ? $user->email : '') ?? '' }}" name="email" class="form-control col-md-4" id="email" placeholder="Email">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
@@ -102,6 +102,20 @@
                                     required: true,
                                     minlength: 2,
                                     maxlength: 20,
+                                    remote: {
+                                        url: "{{ url('users/validateRecord') }}",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "post",
+                                        data: {
+                                            name : function () {
+                                                return $("#users-form #name").val();
+                                            }, id: function () {
+                                                return $("#users-form #id").val();
+                                            }
+                                        }
+                                    }
                                 }, 
                                 full_name: {
                                     required: true,
@@ -112,7 +126,21 @@
                                     required: true,
                                     email: true,
                                     minlength: 6,
-                                    maxlength: 25
+                                    maxlength: 25,
+                                    remote: {
+                                        url: "{{ url('users/validateRecord') }}",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "post",
+                                        data: {
+                                            email : function () {
+                                                return $("#users-form #email").val();
+                                            }, id: function () {
+                                                return $("#users-form #id").val();
+                                            }
+                                        }
+                                    }
                                 },
                                 password: {
                                     required: true,
@@ -138,8 +166,8 @@
                                 name: {
                                     required: "Please Enter User Name",
                                     minlength: "UserName Must Be At Least 6 Characters Long",
-                                    maxlength: "Please Enter User Name No More Than 20 Characters"
-
+                                    maxlength: "Please Enter User Name No More Than 20 Characters",
+                                    remote: "User Name Already Exist.",
                                 },
                                 full_name: {
                                     required: "Please Enter Full Name",
@@ -151,7 +179,9 @@
                                     required: "Please Enter Email",
                                     email: "Please Enter A Valid Email Address",
                                     minlength: "Email Must Be At Least 6 Characters Long",
-                                    maxlength: "Please Enter Email No More Than 50 Characters"
+                                    maxlength: "Please Enter Email No More Than 50 Characters",
+                                    remote: "Email Already Exist.",
+                                    
                                 },
                                 password: {
                                     required: "Please Enter Password",
