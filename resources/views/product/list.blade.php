@@ -18,7 +18,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                    <table id="productData" class="table table-hover table-bordered table-striped" cellspacing="0" width="100%" >
+                                    <table id="productData" class="table table-hover table-bordered table-striped tdheight" cellspacing="0" width="100%" >
                                         <thead>
                                         <tr>
                                             <th> Product Name </th>

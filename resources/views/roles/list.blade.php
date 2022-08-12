@@ -21,7 +21,7 @@
                     <div class="table-responsive">
                         <table
                             id="rolesdata"
-                            class="table table-hover table-bordered table-striped"
+                            class="table table-hover table-bordered table-striped tdheight"
                             cellspacing="0"
                             width="100%"
                         >

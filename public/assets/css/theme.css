@@ -459,3 +459,10 @@ table#systemLogsData {
 .daterangepicker th.available:hover {
     background-color: #000 !important;
 }
+.tdheight tr,
+.tdheight td {
+    border: 1px solid #fff;
+    max-height: 42px !important;
+    height: 42px !important;
+    padding: 0px !important;
+}
